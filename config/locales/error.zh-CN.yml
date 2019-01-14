@@ -1,0 +1,14 @@
+"zh-CN":
+  errors:
+    # 账户相关
+    invalid_credential: '无效的access token'
+    login_required: '需要登录后才可以操作'
+    user_self_required: '需要用户本人才可以操作'
+    record_not_found: '找不到相应的记录'
+    record_invalid: '数据库记录异常'
+    unsupported_type: '不支持的操作类型'
+    params_missing: '缺少参数'
+    params_format_error: '参数类型或参数值不在指定范围内'
+    access_denied: '无权访问'
+    invalid_signature: '无效的访问方式'
+
