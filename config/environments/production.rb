@@ -55,6 +55,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "pokerking-api_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
+  config.cache_store = config_for(:cache_store)
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
