@@ -33,5 +33,16 @@ module PokerkingApi
     config.api_only = true
     config.i18n.default_locale = 'zh-CN'
     config.time_zone = 'Beijing'
+    config.active_job.queue_adapter = :resque
+
+    # auto_load
+    config.autoload_paths += [
+        Rails.root.join('lib')
+    ]
+
+    # eager_load
+    config.eager_load_paths += [
+        Rails.root.join('lib/qcloud')
+    ]
   end
 end
