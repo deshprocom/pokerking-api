@@ -5,7 +5,7 @@ module V1
       include UserAuthorize
       before_action :login_need?
       OPTION_TYPES = %w[login].freeze
-      VCODE_TYPES = %w[mobile].freeze
+      VCODE_TYPES = %w[mobile email].freeze
 
       def create
         optional! :vcode_type, values: VCODE_TYPES
