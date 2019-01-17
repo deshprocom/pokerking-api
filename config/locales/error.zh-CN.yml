@@ -12,3 +12,14 @@
     access_denied: '无权访问'
     invalid_signature: '无效的访问方式'
 
+    # 登录注册香相关
+    email_format_error: '无效的邮箱格式'
+    mobile_format_error: '无效的手机格式'
+    mobile_already_used: '手机号码已被使用'
+    email_already_userd: '邮箱已被使用'
+    password_format_wrong: '密码格式不正确'
+    user_not_found: '用户不存在'
+    user_already_exist: '用户已存在'
+    password_not_match: '用户密码不匹配'
+    vcode_not_match: '验证码不匹配'
+    account_already_bind: '账户已被绑定'

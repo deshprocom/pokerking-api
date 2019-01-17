@@ -32,6 +32,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'redis'
 gem 'redis-rails'
 gem 'dotenv-rails'
+gem 'jwt'
+gem 'second_level_cache'
+gem 'resque', github: 'resque/resque'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
