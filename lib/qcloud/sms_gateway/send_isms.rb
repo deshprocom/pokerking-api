@@ -19,7 +19,7 @@ module Qcloud
         # 写入日志信息
         last_id = write_log(mobile, country_code, msg)
         params = {
-          country_code: last_id,
+          ext: last_id,
           extend: '',
           msg: msg,
           sig: calculate_sig(str_mobile),
