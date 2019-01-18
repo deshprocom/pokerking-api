@@ -17,16 +17,23 @@ module Services
         user = User.by_mobile(@mobile, @country_code)
         raise_error 'user_not_found' if user.nil?
 
-        unless VCode.check_vcode('login', "+#{@country_code}#{@mobile}", @vcode)
+        unless VCode.check_vcode('login', vcode_account, @vcode)
           raise_error 'vcode_not_match'
         end
 
         # 刷新上次访问时间
         user.touch_visit!
+        # 清除验证码
+        # 验证完就清除掉验证码
+        VCode.remove_vcode('login', vcode_account)
 
         # 生成用户令牌
         access_token = UserToken.encode(user.user_uuid)
         LoginResultHelper.call(user, access_token)
+      end
+
+      def vcode_account
+        "+#{@country_code}#{@mobile}"
       end
     end
   end
