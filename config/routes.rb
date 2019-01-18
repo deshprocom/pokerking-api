@@ -6,6 +6,10 @@ Rails.application.routes.draw do
       get       :verify,   to: 'accounts#verify'
       post      :register, to: 'accounts#create'
       post      :login,    to: 'sessions#create'
+
+      resources :users, only: [] do
+        resource :profile, only: [:show, :update]
+      end
     end
   end
 end

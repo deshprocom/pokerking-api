@@ -20,6 +20,7 @@
     password_format_wrong: '密码格式不正确'
     user_not_found: '用户不存在'
     user_already_exist: '用户已存在'
+    user_nickname_exist: '该昵称已被使用'
     password_not_match: '用户密码不匹配'
     vcode_not_match: '验证码不匹配'
     account_already_bind: '账户已被绑定'

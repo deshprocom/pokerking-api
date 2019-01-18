@@ -4,9 +4,11 @@ module V1
       def create
         # 验证参数
         %w[mobile vcode nickname gender email].each { |param| requires! param.to_sym }
+        raise_error 'user_nickname_exist' if User.by_nickname(user_params[:nickname]).present? # 检查昵称唯一性
+        raise_error 'email_format_error'  unless UserValidator.email_valid?(user_params[:email])
+
         mobile_register_service = Services::Account::MobileRegisterService
         @api_result = mobile_register_service.call(user_params)
-        @api_result
       end
 
       def verify
