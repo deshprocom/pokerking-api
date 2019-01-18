@@ -1,0 +1,9 @@
+json.user_id            user.user_uuid
+json.nickname           user.nickname
+json.gender             user.gender
+json.mobile             user.mobile
+json.country_code       user.country_code
+json.email              user.email
+json.reg_date           user.reg_date.to_i
+json.last_visit         user.last_visit.to_i
+json.created_at         user.created_at.to_i
