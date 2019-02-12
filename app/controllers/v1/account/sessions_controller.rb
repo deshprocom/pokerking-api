@@ -12,7 +12,7 @@ module V1
       private
 
       def login_by_vcode
-        Services::Account::VcodeLoginService.call(params[:mobile], params[:vcode], params[:country_code])
+        Services::Account::VcodeLoginService.call(params, request.remote_ip)
       end
     end
   end

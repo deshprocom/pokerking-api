@@ -3,10 +3,11 @@ module Services
     class VcodeLoginService
       include Serviceable
 
-      def initialize(mobile, vcode, country_code)
-        @mobile = mobile
-        @country_code = country_code
-        @vcode = vcode
+      def initialize(params, remote_ip)
+        @mobile = params[:mobile]
+        @country_code = params[:country_code]
+        @vcode = params[:vcode]
+        @remote_ip = remote_ip
       end
 
       def call
@@ -23,6 +24,11 @@ module Services
 
         # 刷新上次访问时间
         user.touch_visit!
+        # 登录次数+1
+        user.increase_login_count
+        # 更新上次访问的ip
+        user.update(last_sign_in_ip: @remote_ip)
+
         # 清除验证码
         # 验证完就清除掉验证码
         VCode.remove_vcode('login', vcode_account)

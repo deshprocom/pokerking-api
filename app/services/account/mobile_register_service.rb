@@ -3,13 +3,14 @@ module Services
     class MobileRegisterService
       include Serviceable
 
-      def initialize(params)
+      def initialize(params, remote_ip)
         @mobile = params[:mobile]
         @country_code = params[:country_code]
         @vcode = params[:vcode]
         @nickname = params[:nickname]
         @gender = params[:gender]
         @email = params[:email]
+        @remote_ip = remote_ip
       end
 
       def call
@@ -25,7 +26,7 @@ module Services
         # 可以注册, 创建一个用户
         create_infos = { mobile: @mobile, country_code: @country_code, nickname: @nickname, gender: @gender, email: @email }
         user = User.create_by_mobile(create_infos)
-        Rails.logger.info "#{user}"
+        user.update(last_sign_in_ip: @remote_ip)
 
         # 生成用户令牌
         access_token = UserToken.encode(user.user_uuid)
