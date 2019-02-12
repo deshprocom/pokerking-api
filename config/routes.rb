@@ -13,6 +13,10 @@ Rails.application.routes.draw do
     end
     resources :main_events, only: [:index, :show] do
       get 'recent_events', on: :collection
+
+      resources :schedules, only: [:index] do
+        get 'dates', on: :collection
+      end
     end
   end
 end
