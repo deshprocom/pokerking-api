@@ -11,7 +11,7 @@ Rails.application.routes.draw do
         resource :profile, only: [:show, :update]
       end
     end
-    resources :main_events, only: [:index] do
+    resources :main_events, only: [:index, :show] do
       get 'recent_events', on: :collection
     end
   end

@@ -1,5 +1,9 @@
 module V1
   class MainEventsController < ApplicationController
+    def show
+      @event = MainEvent.find(params[:id])
+    end
+
     def index
       optional! :fetch_type, values: %w[future bygone], default: 'future'
       requires! :event_id
