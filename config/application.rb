@@ -33,6 +33,7 @@ module PokerkingApi
     config.api_only = true
     config.i18n.default_locale = 'zh-CN'
     config.time_zone = 'Beijing'
+    config.active_record.default_timezone = :local
     config.active_job.queue_adapter = :resque
 
     # auto_load
