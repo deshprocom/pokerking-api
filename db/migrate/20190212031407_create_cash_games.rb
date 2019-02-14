@@ -7,10 +7,11 @@ class CreateCashGames < ActiveRecord::Migration[5.2]
     end
 
     create_table :cash_queues do |t|
+      t.references :cash_game
       t.string  :small_blind, default: '0', comment: '最小盲注'
       t.string  :big_blind, default: '0', comment: '最大盲注'
       t.integer :table_numbers, default: 0, comment: '开办桌子的数量'
-      t.integer :members, default: 0, comment: '排队人数'
+      t.integer :cash_queue_members_count, default: 0, comment: '排队人数'
       t.timestamps
     end
 
