@@ -36,6 +36,7 @@ gem 'jwt'
 gem 'second_level_cache'
 gem 'resque', github: 'resque/resque'
 gem 'faraday'
+gem 'kaminari'
 
 # 文件上传处理 相关
 gem 'carrierwave', '~> 1.0'

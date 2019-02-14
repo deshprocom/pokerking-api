@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :main_events, only: [:index, :show] do
       get 'recent_events', on: :collection
 
+      resources :infos, only: [:index, :show], controller: 'event_infos'
       resources :schedules, only: [:index] do
         get 'dates', on: :collection
       end
