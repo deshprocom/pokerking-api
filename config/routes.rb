@@ -19,5 +19,10 @@ Rails.application.routes.draw do
         get 'dates', on: :collection
       end
     end
+    resources :cash_games, only: [:index] do
+      resources :cash_queues, only: [:index] do
+        resources :cash_queue_members, only: [:index]
+      end
+    end
   end
 end
