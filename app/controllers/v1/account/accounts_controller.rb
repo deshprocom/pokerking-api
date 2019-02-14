@@ -8,7 +8,7 @@ module V1
         raise_error 'email_format_error'  unless UserValidator.email_valid?(user_params[:email])
 
         mobile_register_service = Services::Account::MobileRegisterService
-        @api_result = mobile_register_service.call(user_params)
+        @api_result = mobile_register_service.call(user_params, request.remote_ip)
       end
 
       def verify
