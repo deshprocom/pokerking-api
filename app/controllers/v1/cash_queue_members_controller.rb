@@ -1,5 +1,7 @@
 module V1
   class CashQueueMembersController < ApplicationController
+    include UserAuthorize
+    before_action :login_required
     before_action :set_cash_queue
 
     def index
