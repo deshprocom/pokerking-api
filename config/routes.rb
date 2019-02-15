@@ -24,5 +24,6 @@ Rails.application.routes.draw do
         resources :cash_queue_members, only: [:index]
       end
     end
+    resources :feedbacks, only: [:create]
   end
 end
