@@ -25,10 +25,10 @@ module V1
       # 找到还未结束主赛 或者 找到开始时间距离最近的主赛
       @recent_event = MainEvent.published.where('end_time >= ?', Time.current).begin_asc.first || MainEvent.published.begin_desc.first
       future_events = MainEvent.published.where('begin_time >= ?', @recent_event.begin_time)
-                        .where.not(id: @recent_event.id).begin_asc.limit(5)
+                        .where.not(id: @recent_event.id).begin_asc.limit(20)
       # 将搜索出的数据，变回正序
       bygone_events = MainEvent.published.where('begin_time <= ?', @recent_event.begin_time)
-                        .where.not(id: @recent_event.id).begin_desc.limit(4).reverse
+                        .where.not(id: @recent_event.id).begin_desc.limit(20).reverse
       @events = bygone_events + [ @recent_event ] + future_events
     end
   end

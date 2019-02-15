@@ -25,5 +25,8 @@ Rails.application.routes.draw do
       end
     end
     resources :feedbacks, only: [:create]
+
+    resources :infos, only: [:index, :show]
+    resources :homepage_banners, only: [:index]
   end
 end
