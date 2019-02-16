@@ -1,6 +1,7 @@
 json.user_id            user.user_uuid
 json.nickname           user.nickname
 json.gender             user.gender
+json.avatar             user.avatar_url.to_s
 json.mobile             user.mobile
 json.country_code       user.country_code
 json.email              user.email
