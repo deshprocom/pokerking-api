@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [] do
         resource :profile, only: [:show, :update]
+        resource :avatar, only: [:update]
       end
     end
     resources :main_events, only: [:index, :show] do
