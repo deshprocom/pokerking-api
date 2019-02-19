@@ -4,7 +4,7 @@ class V1::CashQueuesController < ApplicationController
   before_action :set_cash_game
 
   def index
-    @cash_queues = @cash_game.cash_queues.order(created_at: :desc).page(params[:page]).per(10)
+    @cash_queues = @cash_game.cash_queues.order(small_blind: :asc).order(created_at: :desc).page(params[:page]).per(10)
   end
 
   private

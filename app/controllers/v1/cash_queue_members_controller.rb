@@ -5,7 +5,7 @@ module V1
     before_action :set_cash_queue
 
     def index
-      @cash_queue_members = @cash_queue.cash_queue_members.order(created_at: :desc).page(params[:page]).per(10)
+      @cash_queue_members = @cash_queue.cash_queue_members.uncanceled.order(created_at: :desc).page(params[:page]).per(10)
     end
 
     private
