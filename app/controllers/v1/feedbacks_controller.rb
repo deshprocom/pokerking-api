@@ -13,7 +13,7 @@ module V1
                                    sense: params[:sense],
                                    content: params[:content])
 
-      if params[:images].present?
+      if params[:images].present? && params[:images].size <= 3
         params[:images].each do |image|
           feedback_image = @feedback.feedback_images.new
           feedback_image.image = image
