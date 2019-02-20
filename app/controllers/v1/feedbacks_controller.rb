@@ -8,18 +8,20 @@ module V1
       requires! :sense
       requires! :content
 
-      @feedback = Feedback.new
-      if params[:image].present?
-        @feedback.image = params[:image]
-        raise_error 'file_format_error' if @feedback.image.blank? || @feedback.image.path.blank?
-      end
-      raise_error 'file_upload_error' unless @feedback.save
+      @feedback = Feedback.create!(user_id: @current_user.id,
+                                   email: params[:email],
+                                   sense: params[:sense],
+                                   content: params[:content])
 
-      @feedback.assign_attributes(user_id: @current_user.id,
-                                  email: params[:email],
-                                  sense: params[:sense],
-                                  content: params[:content])
-      @feedback.save!
+      if params[:images].present?
+        params[:images].each do |image|
+          feedback_image = @feedback.feedback_images.new
+          feedback_image.image = image
+          raise_error 'file_format_error' if feedback_image.image.blank? || feedback_image.image.path.blank?
+          raise_error 'file_upload_error' unless feedback_image.save
+        end
+      end
+
       render_api_success
     end
   end
