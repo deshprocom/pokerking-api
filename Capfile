@@ -20,11 +20,11 @@ require 'capistrano/bundler'
 require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
 require 'capistrano/puma'
+require 'capistrano-resque'
 install_plugin Capistrano::Puma # Default puma tasks
 install_plugin Capistrano::Puma::Workers # if you want to control the workers (in cluster mode)
 require 'capistrano/scm/git-with-submodules'
 install_plugin Capistrano::SCM::Git::WithSubmodules
-require 'capistrano-resque'
 
 # Include tasks from other gems included in your Gemfile
 #
