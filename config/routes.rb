@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       end
     end
     resources :feedbacks, only: [:create]
+    resources :platform_questions, only: [:index]
 
     resources :infos, only: [:index, :show]
     resources :homepage_banners, only: [:index]
