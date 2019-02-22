@@ -8,7 +8,8 @@ module V1
     end
 
     def dates
-      @dates = EventSchedule.group("DATE_FORMAT(begin_time, '%Y-%m-%d')").map { |e| e.begin_time.to_date.to_s }
+      @event = MainEvent.find(params[:main_event_id])
+      @dates = @event.event_schedules.group("DATE_FORMAT(begin_time, '%Y-%m-%d')").map { |e| e.begin_time.to_date.to_s }
     end
   end
 end
