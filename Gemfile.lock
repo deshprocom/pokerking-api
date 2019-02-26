@@ -170,6 +170,7 @@ GEM
     puma (3.11.4)
     raabro (1.1.6)
     rack (2.0.6)
+    rack-cors (1.0.2)
     rack-protection (2.0.5)
       rack
     rack-test (1.1.0)
@@ -315,6 +316,7 @@ DEPENDENCIES
   mini_magick (~> 4.9, >= 4.9.2)
   mysql2 (>= 0.4.4, < 0.6.0)
   puma (~> 3.11)
+  rack-cors
   rails (~> 5.2.1)
   rb-readline
   redis
