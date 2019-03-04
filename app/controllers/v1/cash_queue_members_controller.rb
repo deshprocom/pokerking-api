@@ -1,7 +1,7 @@
 module V1
   class CashQueueMembersController < ApplicationController
     include UserAuthorize
-    before_action :login_required
+    before_action :check_login
     before_action :set_cash_queue
 
     def index
@@ -12,6 +12,10 @@ module V1
 
     def set_cash_queue
       @cash_queue = CashQueue.find(params[:cash_queue_id])
+    end
+
+    def check_login
+      login_required unless params[:from].eql?('h5')
     end
   end
 end
