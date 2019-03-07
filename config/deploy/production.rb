@@ -1,4 +1,4 @@
-server '103.16.217.233', user: 'deploy', roles: %w{app web db cache resque_worker}
+server '103.16.217.233', user: 'deploy', roles: %w{app db cache resque_worker}
 set :ssh_options, {
   user: 'deploy', # overrides user setting above
   keys: %w(~/.ssh/id_rsa),
