@@ -1,8 +1,8 @@
 module Services
   module Account
     class VcodeServices
-      COMMON_SMS_TEMPLATE = '【Pokerkinglive】Your verification code is：%s'.freeze
-      RESET_PWD_SMS_TEMPLATE = '【Pokerkinglive】Your verification code is：%s'.freeze
+      COMMON_SMS_TEMPLATE = '【Pokerkinglive】Your verification code is:%s'.freeze
+      RESET_PWD_SMS_TEMPLATE = '【Pokerkinglive】Your verification code is:%s'.freeze
       REGISTER_SMS_TITLE = '请激活您的帐号，完成注册'.freeze
       RESET_PWD_TITLE = '重设您的密码'.freeze
       COMMON_SMS_TITLE = 'Pokerkinglive验证码'.freeze
