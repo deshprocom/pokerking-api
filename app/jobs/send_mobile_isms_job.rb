@@ -5,7 +5,8 @@ class SendMobileIsmsJob < ApplicationJob
   def perform(mobile, content, options={})
     logger = Resque.logger
     logger.info "[SendMobileSmsJob] Send SMS to #{mobile} content [#{content}]"
-    Qcloud::SmsGateway::SendIsms.send(mobile, content, options)
+    # Qcloud::SmsGateway::SendIsms.send(mobile, content, options)
+    SmsApi.send(mobile, content, options)
   end
 end
 
