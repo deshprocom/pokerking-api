@@ -2,6 +2,7 @@
 CarrierWave.configure do |config|
   config.storage = :file
   config.base_path = ENV['ASSET_HOST']
+  config.remove_previously_stored_files_after_update = false
   # if Rails.env.test?
   #   config.storage = :file
   # else
