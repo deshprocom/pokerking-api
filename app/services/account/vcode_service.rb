@@ -1,11 +1,11 @@
 module Services
   module Account
     class VcodeServices
-      COMMON_SMS_TEMPLATE = '【澳门旅行APP】您的验证码是：%s，请不要把验证码泄漏给其他人。'.freeze
-      RESET_PWD_SMS_TEMPLATE = '【澳门旅行APP】您的验证码是：%s，您申请重置本站的登录密码，请勿将验证码泄露给任何人。'.freeze
+      COMMON_SMS_TEMPLATE = '您的验证码是：%s，请不要把验证码泄漏给其他人。'.freeze
+      RESET_PWD_SMS_TEMPLATE = '您的验证码是：%s，您申请重置本站的登录密码，请勿将验证码泄露给任何人。'.freeze
       REGISTER_SMS_TITLE = '请激活您的帐号，完成注册'.freeze
       RESET_PWD_TITLE = '重设您的密码'.freeze
-      COMMON_SMS_TITLE = '澳门旅行验证码'.freeze
+      COMMON_SMS_TITLE = '您的验证码'.freeze
       REQUIRE_USER_NOT_EXIST_TYPES = %w[register bind_account bind_new_account].freeze
       REQUIRE_USER_EXIST_TYPES = %w[register bind_account bind_new_account bind_wx_account].freeze
 
