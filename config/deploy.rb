@@ -6,7 +6,8 @@ set :repo_url, "git@github.com:deshprocom/pokerking-api.git"
 set :deploy_to, '/home/deploy/deploy/pokerking_api'
 set :rvm_ruby_version, 'ruby-2.5.0'
 append :linked_files, '.env', 'config/master.key'
-append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system', 'public/uploads'
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
