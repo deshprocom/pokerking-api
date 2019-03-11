@@ -4,7 +4,7 @@ module V1
     before_action :check_login
 
     def index
-      @cash_games = CashGame.order(created_at: :desc).page(params[:page]).per(10)
+      @cash_games = CashGame.order(created_at: :desc).page(params[:page]).per(params[:page_size])
     end
 
     def check_login
