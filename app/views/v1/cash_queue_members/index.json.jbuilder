@@ -10,6 +10,7 @@ json.data do
       json.big_blind                  item.cash_queue.big_blind
       json.table_numbers              item.cash_queue.table_numbers
       json.canceled                   item.canceled
+      json.position                   item.position.to_i
       json.created_at                 item.created_at.to_i
     end
   end
