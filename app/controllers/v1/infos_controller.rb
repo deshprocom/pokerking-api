@@ -5,7 +5,7 @@ module V1
     end
 
     def index
-      @infos = Info.published.page(params[:page]).per(20)
+      @infos = Info.show_in_homepage.published.page(params[:page]).per(20)
     end
   end
 end
