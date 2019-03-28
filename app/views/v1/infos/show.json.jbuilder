@@ -8,6 +8,7 @@ json.data do
     json.title          @info.title
     json.source         @info.source
     json.description    @info.description
+    json.hot            @info.hot
     json.created_at     @info.created_at.to_i
   end
 end
