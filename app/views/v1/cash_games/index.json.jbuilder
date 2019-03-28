@@ -6,7 +6,7 @@ json.data do
       json.id             cash_game.id
       json.name           cash_game.name.to_s
       json.image          cash_game.image_url
-      json.image_en       cash_game.image_en_url
+      json.image_en       cash_game.image_en_url.blank? ? cash_game.image_url : cash_game.image_en_url
       json.position       cash_game.position.to_i
       json.created_at     cash_game.created_at.to_i
     end
