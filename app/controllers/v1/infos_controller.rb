@@ -5,7 +5,11 @@ module V1
     end
 
     def index
-      @infos = Info.show_in_homepage.published.page(params[:page]).per(20)
+      @infos = Info.show_in_homepage
+                   .published
+                   .yield_self{ |it| params[:status].eql?('hot') ? it.hot : it }
+                   .page_order
+                   .page(params[:page]).per(20)
     end
   end
 end
