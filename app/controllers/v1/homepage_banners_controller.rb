@@ -1,7 +1,7 @@
 module V1
   class HomepageBannersController < ApplicationController
     def index
-      @banners = HomepageBanner.limit(20)
+      @banners = HomepageBanner.position_desc.limit(20)
     end
   end
 end
