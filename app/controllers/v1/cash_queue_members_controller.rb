@@ -5,7 +5,7 @@ module V1
     before_action :set_cash_queue
 
     def index
-      @cash_queue_members = @cash_queue.cash_queue_members.uncanceled.position_asc.page(params[:page]).per(params[:page_size])
+      @cash_queue_members = @cash_queue.cash_queue_members.position_asc.page(params[:page]).per(params[:page_size])
     end
 
     private
