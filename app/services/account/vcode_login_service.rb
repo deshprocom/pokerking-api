@@ -18,9 +18,16 @@ module Services
         user = User.by_mobile(@mobile, @country_code)
         raise_error 'user_not_found' if user.nil?
 
-        unless VCode.check_vcode('login', vcode_account, @vcode)
-          raise_error 'vcode_not_match'
+        # 说明免登陆
+        if ENV['SKIP_LOGIN_ON'] && ENV['SKIP_LOGIN_MOBILES']&.split(',')&.include?(@mobile) && @vcode.eql?(ENV['SKIP_LOGIN_VCODE'])
+          # 说明免登陆
+        else
+          # 非免登陆
+          unless VCode.check_vcode('login', vcode_account, @vcode)
+            raise_error 'vcode_not_match'
+          end
         end
+
 
         # 刷新上次访问时间
         user.touch_visit!
