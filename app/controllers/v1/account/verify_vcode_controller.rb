@@ -15,7 +15,7 @@ module V1
         # 验证参数
         requires! :account
 
-        if ENV['SKIP_LOGIN_ON'] && ENV['SKIP_LOGIN_MOBILES']&.split(',')&.include?(params[:account]) && @vcode.eql?(params[:country_code])
+        if ENV['SKIP_LOGIN_ON'] && ENV['SKIP_LOGIN_MOBILES']&.split(',')&.include?(params[:account]) && params[:vcode].eql?(ENV['SKIP_LOGIN_VCODE'])
           # 说明免登陆
           nil
         else
