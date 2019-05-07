@@ -39,6 +39,7 @@ json.data do
       json.cash_queue_members_count   cash_queue.cash_queue_members_count
       json.buy_in                     cash_queue.buy_in
       json.table_no                   cash_queue.table_no
+      json.notice                     cash_queue.notice
       json.created_at                 cash_queue.created_at.to_i
     end
   end
