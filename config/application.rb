@@ -45,5 +45,7 @@ module PokerkingApi
     config.eager_load_paths += [
         Rails.root.join('lib/qcloud')
     ]
+
+    config.middleware.use Rack::Attack
   end
 end
