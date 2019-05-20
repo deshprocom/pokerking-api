@@ -171,6 +171,8 @@ GEM
     puma (3.11.4)
     raabro (1.1.6)
     rack (2.0.6)
+    rack-attack (6.0.0)
+      rack (>= 1.0, < 3)
     rack-cors (1.0.2)
     rack-protection (2.0.5)
       rack
@@ -322,6 +324,7 @@ DEPENDENCIES
   mysql2 (>= 0.4.4, < 0.6.0)
   newrelic_rpm
   puma (~> 3.11)
+  rack-attack
   rack-cors
   rails (~> 5.2.1)
   rb-readline
@@ -340,4 +343,4 @@ RUBY VERSION
    ruby 2.5.0p0
 
 BUNDLED WITH
-   1.16.1
+   1.17.3
