@@ -1,6 +1,6 @@
 class V1::CashQueuesController < ApplicationController
   include UserAuthorize
-  # before_action :check_login
+  before_action :check_login
   before_action :set_cash_game
 
   def index
