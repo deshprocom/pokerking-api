@@ -3,7 +3,7 @@ class Rack::Attack
 
   Rack::Attack.cache.store = Rails.cache
 
-  throttle('req/ip', limit: 100, period: 1.minute) do |req|
+  throttle('req/ip', limit: 200, period: 1.minute) do |req|
     req.ip
   end
 
