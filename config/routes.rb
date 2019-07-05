@@ -26,7 +26,13 @@ Rails.application.routes.draw do
       end
     end
     resources :feedbacks, only: [:create]
-    resources :infos, only: [:index, :show]
+    resources :infos, only: [:index, :show] do
+      collection do
+        get :search
+        get :history_search
+        get :remove_history_search
+      end
+    end
     resources :homepage_banners, only: [:index]
   end
 end
