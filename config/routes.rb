@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   namespace :v1 do
+    namespace :users do
+      get 'favorites/index'
+      get 'favorites/create'
+      get 'favorites/show'
+      get 'favorites/is_favorite'
+    end
+  end
+  namespace :v1 do
     namespace :account do
       resources :v_codes,      only: [:create]
       resource  :verify_vcode, only: [:create]
@@ -34,5 +42,11 @@ Rails.application.routes.draw do
       end
     end
     resources :homepage_banners, only: [:index]
+    resources :users, module: :users, only: [] do
+      resources :favorites, only: [:index, :create] do
+        post :cancel, on: :collection
+        post :is_favorite, on: :collection
+      end
+    end
   end
 end
