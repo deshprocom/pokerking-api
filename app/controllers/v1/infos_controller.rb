@@ -15,12 +15,6 @@ module V1
       @infos = is_login? ? @infos : @infos.published
     end
 
-    private
-
-    def is_login?
-      current_user.present? && current_user.preview
-    end
-
     # 资讯搜索 分关键词搜索，时间搜索，以及类别搜索
     def search
       @infos = Info.show_in_homepage.published
@@ -63,6 +57,12 @@ module V1
     def remove_history_search
       KeywordRedis.remove_keyword('info')
       render_api_success
+    end
+
+    private
+
+    def is_login?
+      current_user.present? && current_user.preview
     end
   end
 end
