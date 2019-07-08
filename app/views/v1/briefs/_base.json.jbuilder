@@ -7,7 +7,7 @@ when 'info'
     json.preview_image target.image_url
   end
 when 'main_event'
-  json.hotel do
+  json.main_event do
     json.id            target.id
     json.name          target.name
     json.logo          target.logo_url
