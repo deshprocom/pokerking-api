@@ -5,6 +5,7 @@ json.data do
     json.array! @cash_games do |cash_game|
       json.id             cash_game.id
       json.name           cash_game.name.to_s
+      json.table_type     cash_game.table_type.to_s
       json.image          cash_game.image_url
       json.image_en       cash_game.image_en_url.blank? ? cash_game.image_url : cash_game.image_en_url
       json.image_complex  cash_game.image_complex_url.blank? ? cash_game.image_url : cash_game.image_complex_url

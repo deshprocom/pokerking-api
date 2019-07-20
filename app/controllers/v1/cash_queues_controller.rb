@@ -6,11 +6,22 @@ class V1::CashQueuesController < ApplicationController
   def index
     # 一个高级区
     @high_limit_queue = @cash_game.cash_queues.where(high_limit: true).first
+    @transfer_queue = @cash_game.cash_queues.where(transfer: true).first
 
-    max_number = @high_limit_queue.blank? ? 5 : 4
-    # 最多4张的普通桌子
+    len = if @high_limit_queue.blank? && @transfer_queue.blank?
+            0
+          elsif !@high_limit_queue.blank? && !@transfer_queue.blank?
+            2
+          else
+            1
+          end
+
+    max_total_number = @cash_game.table_type.eql?('Macao') ? 5 : 6 # 澳门最多显示5列 亚洲6列
+
+    # 最多获取的桌子数量
+    max_number = max_total_number - len
     @ordinary_queues = @cash_game.cash_queues.order(small_blind: :asc).where(high_limit: false).take(max_number)
-    @cash_queues = @ordinary_queues.dup.push(@high_limit_queue).compact
+    @cash_queues = @ordinary_queues.dup.push(@high_limit_queue).push(@transfer_queue).compact
     @sorted_queues = {}
     # 将桌子全部打散开来，对应到对应的盲注结构上
     @cash_queues.each do |item|

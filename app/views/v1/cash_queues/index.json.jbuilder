@@ -8,7 +8,7 @@ json.data do
     end
   end
 
-  # 有限制的列
+  # high limit 列
   json.high_limit_queues do
     if @high_limit_queue.blank?
       json.status false
@@ -17,6 +17,16 @@ json.data do
       json.partial! 'v1/cash_queues/item', cash_queue: @high_limit_queue
     end
   end
+
+  # transfer request 列
+  json.transfer_request_queues do
+      if @transfer_queue.blank?
+        json.status false
+      else
+        json.status true
+        json.partial! 'v1/cash_queues/item', cash_queue: @transfer_queue
+      end
+    end
 
   # 桌号的问题
   json.tables do
