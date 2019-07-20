@@ -10,6 +10,7 @@ module Services
         @nickname = params[:nickname]
         @gender = params[:gender]
         @email = params[:email]
+        @password = params[:password]
         @remote_ip = remote_ip
       end
 
@@ -23,8 +24,11 @@ module Services
         # 检查手机号是否存在
         raise_error 'mobile_already_used' if UserValidator.mobile_exists?(@mobile, @country_code)
 
+        # 检查密码是否合法
+        raise_error 'password_format_wrong' if @password.present? && !UserValidator.pwd_valid?(@password)
+
         # 可以注册, 创建一个用户
-        create_infos = { mobile: @mobile, country_code: @country_code, nickname: @nickname, gender: @gender, email: @email }
+        create_infos = { mobile: @mobile, country_code: @country_code, nickname: @nickname, gender: @gender, email: @email, password: @password }
         user = User.create_by_mobile(create_infos)
         user.update(last_sign_in_ip: @remote_ip)
 
