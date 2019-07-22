@@ -1,6 +1,8 @@
 json.partial! 'common/basic', api_result: ApiResult.success_result
 
 json.data do
+  json.table_type @cash_game.table_type.to_s
+
   # 普通的列
   json.ordinary_queues do
     json.array! @ordinary_queues do |cash_queue|
