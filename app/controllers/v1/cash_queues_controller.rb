@@ -20,7 +20,7 @@ class V1::CashQueuesController < ApplicationController
 
     # 最多获取的桌子数量
     max_number = max_total_number - len
-    @ordinary_queues = @cash_game.cash_queues.order(small_blind: :asc).where(high_limit: false).take(max_number)
+    @ordinary_queues = @cash_game.cash_queues.order(small_blind: :asc).where(high_limit: false).where(transfer: false).take(max_number)
     @cash_queues = @ordinary_queues.dup.push(@high_limit_queue).push(@transfer_queue).compact
     @sorted_queues = {}
     # 将桌子全部打散开来，对应到对应的盲注结构上
