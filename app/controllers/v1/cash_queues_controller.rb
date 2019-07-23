@@ -5,8 +5,8 @@ class V1::CashQueuesController < ApplicationController
 
   def index
     # 一个高级区
-    @high_limit_queue = @cash_game.cash_queues.where(high_limit: true).order(id: :desc).first
-    @transfer_queue = @cash_game.cash_queues.where(transfer: true).order(id: :desc).first
+    @high_limit_queue = @cash_game.cash_queues.where(high_limit: true).position_desc.order(id: :desc).first
+    @transfer_queue = @cash_game.cash_queues.where(transfer: true).position_desc.order(id: :desc).first
 
     len = if @high_limit_queue.blank? && @transfer_queue.blank?
             0
