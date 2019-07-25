@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  namespace :v2 do
+    get 'cash_queues/index'
+  end
+  namespace :v1 do
+    namespace :users do
+      get 'favorites/index'
+      get 'favorites/create'
+      get 'favorites/show'
+      get 'favorites/is_favorite'
+    end
+  end
   namespace :v1 do
     namespace :account do
       resources :v_codes,      only: [:create]
@@ -26,7 +37,26 @@ Rails.application.routes.draw do
       end
     end
     resources :feedbacks, only: [:create]
-    resources :infos, only: [:index, :show]
+    resources :infos, only: [:index, :show] do
+      collection do
+        get :search
+        get :history_search
+        get :remove_history_search
+      end
+    end
     resources :homepage_banners, only: [:index]
+    resources :users, module: :users, only: [] do
+      resources :favorites, only: [:index, :create] do
+        post :cancel, on: :collection
+        post :is_favorite, on: :collection
+      end
+    end
+  end
+  namespace :v2 do
+    resources :cash_games, only: [:index] do
+      resources :cash_queues, only: [:index] do
+        resources :cash_queue_members, only: [:index]
+      end
+    end
   end
 end

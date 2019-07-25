@@ -18,7 +18,7 @@ module V1
       end
 
       def user_params
-        params.permit(:mobile, :country_code, :vcode, :nickname, :gender, :email)
+        params.permit(:mobile, :country_code, :vcode, :nickname, :password, :gender, :email)
       end
     end
   end

@@ -48,6 +48,10 @@ gem 'newrelic_rpm'
 
 gem 'rack-attack'
 
+#  ActionStore - 一步到位的 Like, Follow, Star, Block ... 等动作的解决方案
+#  https://ruby-china.org/topics/32262
+gem 'action-store'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
