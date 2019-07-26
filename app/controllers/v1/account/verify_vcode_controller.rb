@@ -4,7 +4,7 @@ module V1
     class VerifyVcodesController < ApplicationController
       include UserAuthorize
       before_action :login_need?
-      OPTION_TYPES = %w[login].freeze
+      OPTION_TYPES = %w[login change_pwd bind_account].freeze
       VCODE_TYPES = %w[mobile email].freeze
 
       def create
@@ -13,7 +13,7 @@ module V1
         optional! :option_type, values: OPTION_TYPES
 
         # 验证参数
-        requires! :account
+        # requires! :account
 
         if ENV['SKIP_LOGIN_ON'] && ENV['SKIP_LOGIN_MOBILES']&.split(',')&.include?(params[:account]) && params[:vcode].eql?(ENV['SKIP_LOGIN_VCODE'])
           # 说明免登陆
@@ -28,10 +28,10 @@ module V1
       private
 
       def login_need?
-        if params[:option_type].eql?('change_old_account')
-          login_required
-        else
+        if params[:option_type].eql?('login')
           @current_user = nil
+        else
+          login_required
         end
       end
 
