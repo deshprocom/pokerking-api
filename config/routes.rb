@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  namespace :v2 do
-    get 'cash_queues/index'
-  end
   namespace :v1 do
     namespace :users do
       get 'favorites/index'
@@ -53,6 +50,13 @@ Rails.application.routes.draw do
     end
   end
   namespace :v2 do
+    namespace :account do
+      post      :register, to: 'accounts#create'
+      post      :login,    to: 'sessions#create'
+      resource :change_password, only: [:create]
+      resources :bind_account, only: [:create]
+      resources :change_account, only: [:create]
+    end
     resources :cash_games, only: [:index] do
       resources :cash_queues, only: [:index] do
         resources :cash_queue_members, only: [:index]

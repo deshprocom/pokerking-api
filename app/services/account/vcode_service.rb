@@ -72,7 +72,7 @@ module Services
 
       def check_permission
         # 登录的情况下跳过检查
-        return if @option_type.eql? 'login'
+        return if @option_type.eql?('login') || @option_type.eql?('change_pwd')
         # 注册和绑定的时候要求用户不存在
         raise_error 'user_already_exist' if @option_type.in?(REQUIRE_USER_NOT_EXIST_TYPES) && check_user_exist
         # 其它情况都要求用户已存在
@@ -84,7 +84,7 @@ module Services
       end
 
       def gain_account_id
-        if @user.present?
+        if @user.present? && !@option_type.eql?('bind_account')
           @country_code = @user.country_code # 如果是更换账户，那么它的区号 手机号 或邮箱都从数据库取
           @user[:"#{@vcode_type}"]
         else

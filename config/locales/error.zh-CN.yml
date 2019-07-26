@@ -24,6 +24,8 @@
     password_not_match: '用户密码不匹配'
     vcode_not_match: '验证码不匹配'
     account_already_bind: '账户已被绑定'
+    account_already_used: '该账户已被注册使用'
+    account_illegal: '不是有效的账号格式'
 
     # 文件上传相关
     file_format_error: '图片格式错误'
