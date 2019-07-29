@@ -1,4 +1,4 @@
-module V2
+module V1
   module Account
     class ChangePasswordsController < ApplicationController
       CHANGE_PWD_TYPE = %w[vcode pwd].freeze
