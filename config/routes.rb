@@ -14,6 +14,9 @@ Rails.application.routes.draw do
       get       :verify,   to: 'accounts#verify'
       post      :register, to: 'accounts#create'
       post      :login,    to: 'sessions#create'
+      resource :change_password, only: [:create]
+      resources :bind_account, only: [:create]
+      resources :change_account, only: [:create]
 
       resources :users, only: [] do
         resource :profile, only: [:show, :update]
@@ -49,18 +52,18 @@ Rails.application.routes.draw do
       end
     end
   end
-  namespace :v2 do
-    namespace :account do
-      post      :register, to: 'accounts#create'
-      post      :login,    to: 'sessions#create'
-      resource :change_password, only: [:create]
-      resources :bind_account, only: [:create]
-      resources :change_account, only: [:create]
-    end
-    resources :cash_games, only: [:index] do
-      resources :cash_queues, only: [:index] do
-        resources :cash_queue_members, only: [:index]
-      end
-    end
-  end
+  # namespace :v2 do
+  #   namespace :account do
+  #     post      :register, to: 'accounts#create'
+  #     post      :login,    to: 'sessions#create'
+  #     resource :change_password, only: [:create]
+  #     resources :bind_account, only: [:create]
+  #     resources :change_account, only: [:create]
+  #   end
+  #   resources :cash_games, only: [:index] do
+  #     resources :cash_queues, only: [:index] do
+  #       resources :cash_queue_members, only: [:index]
+  #     end
+  #   end
+  # end
 end

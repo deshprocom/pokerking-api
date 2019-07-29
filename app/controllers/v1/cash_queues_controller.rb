@@ -2,42 +2,53 @@ class V1::CashQueuesController < ApplicationController
   include UserAuthorize
   before_action :check_login
   before_action :set_cash_game
-
   def index
-    # 一个高级区
-    @high_limit_queue = @cash_game.cash_queues.where(high_limit: true).position_desc.order(id: :desc).first
-    @transfer_queue = @cash_game.cash_queues.where(transfer: true).position_desc.order(id: :desc).first
-
-    len = if @high_limit_queue.blank? && @transfer_queue.blank?
-            0
-          elsif !@high_limit_queue.blank? && !@transfer_queue.blank?
-            2
-          else
-            1
-          end
-
-    max_total_number = @cash_game.table_type.eql?('Macao') ? 5 : 6 # 澳门最多显示5列 亚洲6列
-
-    # 最多获取的桌子数量
-    max_number = max_total_number - len
-    @ordinary_queues = @cash_game.cash_queues.order(small_blind: :asc).where(high_limit: false).where(transfer: false).take(max_number)
-    @cash_queues = @ordinary_queues.dup.push(@high_limit_queue).push(@transfer_queue).compact
-    @sorted_queues = {}
-    # 将桌子全部打散开来，对应到对应的盲注结构上
-    @cash_queues.each do |item|
-      item.table_no.split(',').each do |i|
-        @sorted_queues[i] = item
-      end
-    end
+    from_h5? ? h5_lists : app_lists
   end
 
   private
+
+  # h5 部分要显示出来high limit 和 transfer， app端不需要
+  def h5_lists
+    @cash_queues = @cash_game.cash_queues.position_desc.order(id: :desc).take(limit_number)
+    # 将桌子全部打散开来，对应到对应的盲注结构上
+    @sorted_queues = is_macao? ? macao_tables(@cash_queues) : {}
+  end
+
+  def app_lists
+    @cash_queues = @cash_game.cash_queues.where(high_limit: false).where(transfer: false).position_desc.order(id: :desc).page(params[:page]).per(params[:page_size])
+    @sorted_queues = is_macao? ? macao_tables(@cash_queues) : {}
+  end
+
+  # 澳门需要获取每个桌子的大盲注 小盲注 亚洲的不需要
+  def macao_tables(cash_queue)
+    sorted_queues = {}
+    cash_queue.each do |item|
+      item.table_no.split(',').each do |i|
+        sorted_queues[i] = item
+      end
+    end
+    sorted_queues
+  end
+
+  # 不同模板显示的数量不一样， h5澳门最多显示5列  亚洲显示6列
+  def limit_number
+    is_macao? ? 5 : 6
+  end
+
+  def is_macao?
+    @cash_game.table_type.eql?('Macao')
+  end
 
   def set_cash_game
     @cash_game = CashGame.find(params[:cash_game_id])
   end
 
   def check_login
-    login_required unless params[:from].eql?('h5')
+    login_required unless from_h5?
+  end
+
+  def from_h5?
+    params[:from].eql?('h5')
   end
 end

@@ -1,5 +1,5 @@
 # 绑定登录账户
-module V2
+module V1
   module Account
     class BindAccountController < ApplicationController
       ACCOUNT_TYPES = %w[mobile].freeze
