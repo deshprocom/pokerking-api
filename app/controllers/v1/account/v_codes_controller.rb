@@ -4,7 +4,7 @@ module V1
     class VCodesController < ApplicationController
       include UserAuthorize
       before_action :login_need?
-      OPTION_TYPES = %w[login change_pwd bind_account change_old_account bind_new_account].freeze
+      OPTION_TYPES = %w[login reset_pwd change_pwd bind_account change_old_account bind_new_account].freeze
       VCODE_TYPES = %w[mobile email].freeze
 
       def create
