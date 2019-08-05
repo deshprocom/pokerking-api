@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resource :change_password, only: [:create]
       resources :bind_account, only: [:create]
       resources :change_account, only: [:create]
+      resource  :reset_password, only: [:create]
 
       resources :users, only: [] do
         resource :profile, only: [:show, :update]

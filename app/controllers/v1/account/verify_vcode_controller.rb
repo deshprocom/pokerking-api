@@ -4,12 +4,12 @@ module V1
     class VerifyVcodesController < ApplicationController
       include UserAuthorize
       before_action :login_need?
-      OPTION_TYPES = %w[login change_pwd bind_account].freeze
+      OPTION_TYPES = %w[login reset_pwd change_pwd change_old_account bind_account bind_new_account].freeze
       VCODE_TYPES = %w[mobile email].freeze
 
       def create
         # 验证码类型是否符合
-        optional! :vcode_type, values: VCODE_TYPES
+        optional! :vcode_type, values: VCODE_TYPES unless params[:option_type].eql?('change_old_account') || params[:option_type].eql?('change_pwd')
         optional! :option_type, values: OPTION_TYPES
 
         # 验证参数
@@ -36,8 +36,8 @@ module V1
       end
 
       def gain_account
-        if params[:option_type].eql?('change_old_account')
-          "+#{@current_user.country_code}#{@current_user[params[:vcode_type]]}"
+        if params[:option_type].eql?('change_old_account') || params[:option_type].eql?('change_pwd')
+          "+#{@current_user.country_code}#{@current_user.mobile}"
         else
           "+#{params[:country_code]}#{params[:account]}"
         end

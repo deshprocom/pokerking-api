@@ -5,6 +5,8 @@ module V1
 
     def show
       @info = Info.find(params[:id])
+      #热门资讯返回该资讯创建前面的4条资讯
+      @hot_infos = Info.where('id < ?', @info.id).where(hot: true).order(id: :desc).take(4)
     end
 
     def index
