@@ -28,7 +28,7 @@ module V1
       private
 
       def login_need?
-        if params[:option_type].eql?('login')
+        if params[:option_type].eql?('login') || params[:option_type].eql?('reset_pwd')
           @current_user = nil
         else
           login_required

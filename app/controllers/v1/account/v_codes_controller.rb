@@ -21,7 +21,7 @@ module V1
       end
 
       def login_need?
-        if params[:option_type].eql?('login')
+        if params[:option_type].eql?('login') || params[:option_type].eql?('reset_pwd')
           # 登录 注册的时候不需要登录
           @current_user = nil
         else
