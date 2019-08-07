@@ -12,3 +12,4 @@ json.queue_type                 cash_queue.queue_type_tmp
 json.navigation                 cash_queue.navigation_url.to_s
 json.notice                     cash_queue.notice.to_s
 json.created_at                 cash_queue.created_at.to_i
+json.apply_index                cash_queue.current_user_index(@current_user)
