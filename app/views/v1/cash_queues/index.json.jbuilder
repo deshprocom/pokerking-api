@@ -6,7 +6,7 @@ json.data do
   # 普通的列
   json.queues do
     json.array! @cash_queues do |cash_queue|
-      json.partial! 'v2/cash_queues/item', cash_queue: cash_queue
+      json.partial! 'v1/cash_queues/item', cash_queue: cash_queue
     end
   end
 

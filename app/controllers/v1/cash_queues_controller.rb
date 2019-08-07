@@ -6,6 +6,17 @@ class V1::CashQueuesController < ApplicationController
     from_h5? ? h5_lists : app_lists
   end
 
+  def apply
+    # 1 判断A想报名的盲注结构没有与A同名的用户
+    @cash_queue = @cash_game.cash_queues.find(params[:id])
+    apply_users = @cash_queue.cash_queue_members.where(nickname: @current_user.nickname)
+    raise_error 'already_apply' unless apply_users.blank?
+    # 2 允许A报名
+    @queue_member = @cash_queue.cash_queue_members.create(nickname: @current_user.nickname, user_id: @current_user.id, memo: 'from app')
+    # 3 报名成功下发通知
+    # 4 返回A报名成功的信息
+  end
+
   private
 
   # h5 部分要显示出来high limit 和 transfer， app端不需要
