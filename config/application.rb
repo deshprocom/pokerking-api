@@ -43,7 +43,8 @@ module PokerkingApi
 
     # eager_load
     config.eager_load_paths += [
-        Rails.root.join('lib/qcloud')
+        Rails.root.join('lib/qcloud'),
+        Rails.root.join('lib/dp_push')
     ]
 
     config.middleware.use Rack::Attack

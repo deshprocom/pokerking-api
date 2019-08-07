@@ -35,8 +35,10 @@ Rails.application.routes.draw do
     resources :cash_games, only: [:index] do
       resources :cash_queues, only: [:index] do
         resources :cash_queue_members, only: [:index]
-        post :apply, on: :member
       end
+    end
+    resources :cash_queues, only: [] do
+      post :scanapply, on: :collection
     end
     resources :feedbacks, only: [:create]
     resources :infos, only: [:index, :show] do
