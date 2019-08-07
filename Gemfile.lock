@@ -121,6 +121,7 @@ GEM
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    jpush (4.0.6)
     jwt (2.1.0)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
@@ -322,6 +323,7 @@ DEPENDENCIES
   factory_bot
   faraday
   jbuilder
+  jpush
   jwt
   kaminari
   listen (>= 3.0.5, < 3.2)

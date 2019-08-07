@@ -54,6 +54,10 @@ Rails.application.routes.draw do
         post :cancel, on: :collection
         post :is_favorite, on: :collection
       end
+      resources :notifications, only: [:index, :destroy] do
+        get 'unread_remind', on: :collection
+        post 'read', on: :member
+      end
     end
   end
   # namespace :v2 do
