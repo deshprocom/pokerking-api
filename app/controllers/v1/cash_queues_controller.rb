@@ -23,6 +23,20 @@ class V1::CashQueuesController < ApplicationController
     # 4 返回A报名成功的信息
   end
 
+  # app上取消报名排队
+  def cancelapply
+    # 判断用户是否有申请报名过该盲注结构
+    @cash_queue = @cash_game.cash_queues.find(params[:id])
+    member_item = @cash_queue.cash_queue_members.find_by(user_id: 13)
+    raise_error 'no_apply' if member_item.blank?
+    # 取消用户报名
+    member_item.destroy
+    # 下发取消报名的通知
+    Notification.cancel_queue_notify(@current_user, @cash_queue)
+    # 返回成功结果
+    render_api_success
+  end
+
   private
 
   def parse_params
