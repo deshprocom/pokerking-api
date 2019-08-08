@@ -42,7 +42,7 @@ class V1::CashQueuesController < ApplicationController
   def parse_params
     vg_number = params[:vgcodenumber]
     vg_result = params[:vgdecoderesult]
-    raise 'params_missing' if vg_result.blank? || vg_number.blank?
+    raise_error 'params_missing' if vg_result.blank? || vg_number.blank?
     decode_vg_result = JSON.load(Base64.decode64(vg_result)) # base64解码 然后将字符串转成JSON
     { vg_result: decode_vg_result, vg_number: vg_number }
   end
