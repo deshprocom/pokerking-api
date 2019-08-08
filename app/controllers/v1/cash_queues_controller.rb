@@ -9,6 +9,8 @@ class V1::CashQueuesController < ApplicationController
 
   # 扫描报名某个盲注结构
   def scanapply
+    # 增加调试
+    return render plain: { params: params, env: request.env }
     @params = parse_params # 解析前端传递的参数
     check_scan_login(@params[:vg_result]['access_token']) # 检查设备传递的token是否正确 并返回当前用户
     @cash_game = CashGame.find(@params[:vg_result]['cash_game_id'])
@@ -27,7 +29,7 @@ class V1::CashQueuesController < ApplicationController
   def cancelapply
     # 判断用户是否有申请报名过该盲注结构
     @cash_queue = @cash_game.cash_queues.find(params[:id])
-    member_item = @cash_queue.cash_queue_members.find_by(user_id: 13)
+    member_item = @cash_queue.cash_queue_members.find_by(user_id: @current_user.id)
     raise_error 'no_apply' if member_item.blank?
     # 取消用户报名
     member_item.destroy
