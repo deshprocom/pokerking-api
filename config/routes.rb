@@ -60,6 +60,9 @@ Rails.application.routes.draw do
         post 'read', on: :member
       end
     end
+    resources :short_url, only: [:create] do
+      post :restore, on: :collection
+    end
   end
   # namespace :v2 do
   #   namespace :account do
