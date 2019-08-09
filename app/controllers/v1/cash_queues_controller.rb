@@ -9,13 +9,11 @@ class V1::CashQueuesController < ApplicationController
 
   # 扫描报名某个盲注结构
   def scanapply
-    # 增加调试
-    return render plain: { params: params, env: request.env }
     @params = parse_params # 解析前端传递的参数
-    check_scan_login(@params[:vg_result]['access_token']) # 检查设备传递的token是否正确 并返回当前用户
-    @cash_game = CashGame.find(@params[:vg_result]['cash_game_id'])
+    check_scan_login(@params[:token]) # 检查设备传递的token是否正确 并返回当前用户
+    @cash_game = CashGame.find(@params[:cash_game_id])
     # 1 判断A想报名的盲注结构没有与A同名的用户
-    @cash_queue = @cash_game.cash_queues.find(@params[:vg_result]['cash_queue_id'])
+    @cash_queue = @cash_game.cash_queues.find(@params[:cash_queue_id])
     apply_users = @cash_queue.cash_queue_members.where(nickname: @current_user.nickname)
     raise_error 'already_apply' unless apply_users.blank?
     # 2 允许A报名
@@ -42,11 +40,34 @@ class V1::CashQueuesController < ApplicationController
   private
 
   def parse_params
-    vg_number = params[:vgcodenumber]
-    vg_result = params[:vgdecoderesult]
+    Rails.logger.info "string io: #{request.body.read}"
+    # 解析前端传过来的短网址
+    stringio = request.body.read.split('&&')
+    # 获取dwz url 并检查
+    dwz_url = stringio.first.split('=').second
+    raise_error 'params_missing' if dwz_url.blank?
+    # 获取vg 设备号
+    vg_number = stringio.second.split('=').second
+    vg_result = parse_dwz(dwz_url)['LongUrl'].split('?').second
     raise_error 'params_missing' if vg_result.blank? || vg_number.blank?
-    decode_vg_result = JSON.load(Base64.decode64(vg_result)) # base64解码 然后将字符串转成JSON
-    { vg_result: decode_vg_result, vg_number: vg_number }
+    vg_params = vg_result.split('&')
+    raise_error 'params_missing' if vg_params.blank? ||
+        !vg_params.first.split('=').first.eql?('token') ||
+        !vg_params.second.split('=').first.eql?('cash_queue_id')
+        !vg_params.third.split('=').first.eql?('cash_game_id')
+    token = vg_params.first.split('=').second
+    cash_queue_id = vg_params.second.split('=').second
+    cash_game_id = vg_params.third.split('=').second
+    {
+      token: token,
+      cash_queue_id: cash_queue_id,
+      cash_game_id: cash_game_id,
+      number: vg_number
+    }
+  end
+
+  def parse_dwz(url)
+    Dwz.new.query(url)
   end
 
   def check_scan_login(user_token)
