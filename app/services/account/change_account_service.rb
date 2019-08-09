@@ -38,7 +38,9 @@ module Services
         raise_error 'mobile_already_used' if UserValidator.mobile_exists?(mobile, user_params[:country_code])
 
         # 清除redis缓存的旧用户数据
-        User.expire_cache_uniq_key(mobile: user.mobile)
+        User.expire_cache_uniq_key(nickname: user.nickname) # 清除注册时候昵称对应的缓存
+        User.expire_cache_uniq_key(account_id: user.account_id) # 清除登录时候account对应的缓存
+        User.expire_cache_uniq_key(mobile: user.mobile, country_code: user.country_code) # 清除手机号验证码登录的缓存
 
         # 更新账户
         user.assign_attributes(mobile: mobile)
