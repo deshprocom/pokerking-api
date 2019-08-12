@@ -5,6 +5,8 @@ Rails.application.routes.draw do
       get 'favorites/create'
       get 'favorites/show'
       get 'favorites/is_favorite'
+      post 'notify/on'
+      post 'notify/off'
     end
   end
   namespace :v1 do
