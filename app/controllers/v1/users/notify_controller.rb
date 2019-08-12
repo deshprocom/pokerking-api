@@ -2,7 +2,7 @@ module V1
   module Users
     class NotifyController < ApplicationController
       include UserAuthorize
-      before_action :user_self_required
+      before_action :login_required
 
       # 打开消息通知
       def on
@@ -15,6 +15,7 @@ module V1
         else
           raise_error '请传入正确的消息类型'
         end
+        render_api_success
       end
 
       def off
@@ -26,7 +27,8 @@ module V1
           @current_user.update(apply_notify: false)
         else
           raise_error '请传入正确的消息类型'
-      end
+        end
+        render_api_success
       end
     end
   end
