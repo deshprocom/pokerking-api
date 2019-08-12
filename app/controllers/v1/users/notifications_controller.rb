@@ -33,10 +33,12 @@ module V1
           @current_user.notifies('apply').each{ |i| i.update(read: true) }
         elsif params[:type].eql? 'event'
           @current_user.notifies('event').each{ |i| i.update(read: true) }
+        elsif params[:type].eql? 'all'
+          @current_user.notifications.each{ |i| i.update(read: true) }
         else
           raise_error 'params_missing'
         end
-        @apply_notifications = @current_user.notifies('apply')
+        render_api_success
       end
     end
   end
