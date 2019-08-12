@@ -27,6 +27,17 @@ module V1
         @current_user.notifications.find(params[:id]).destroy
         render_api_success
       end
+
+      def read_all
+        if params[:type].eql? 'apply'
+          @current_user.notifies('apply').each{ |i| i.update(read: true) }
+        elsif params[:type].eql? 'event'
+          @current_user.notifies('event').each{ |i| i.update(read: true) }
+        else
+          raise_error 'params_missing'
+        end
+        @apply_notifications = @current_user.notifies('apply')
+      end
     end
   end
 end

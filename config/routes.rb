@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       resources :notifications, only: [:index, :destroy] do
         get 'unread_remind', on: :collection
         post 'read', on: :member
+        post 'read_all', on: :member
       end
     end
     resources :short_url, only: [:create] do
