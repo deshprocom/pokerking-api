@@ -7,5 +7,7 @@ json.mobile             user.mobile.to_s
 json.country_code       user.country_code.to_s
 json.email              user.email.to_s
 json.reg_date           user.reg_date.to_i
+json.apply_notify       user.apply_notify
+json.event_notify       user.event_notify
 json.last_visit         user.last_visit.to_i
 json.created_at         user.created_at.to_i
