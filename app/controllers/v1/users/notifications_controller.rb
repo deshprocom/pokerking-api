@@ -5,12 +5,16 @@ module V1
       before_action :user_self_required
 
       def index
-        @notifications = @current_user.notifications.order(id: :desc).limit(30)
-        CashGame.position_desc.page(params[:page]).per(params[:page_size])
+        @apply_notifications = @current_user.notifies('apply')
+        @apply_notification_unread = @apply_notifications.where(read: false).count
+        @event_notifications = @current_user.notifies('event')
+        @event_notification_unread = @event_notifications.where(read: false).count
+        @apply_notifications = @apply_notifications.limit(30)
+        @event_notifications = @event_notifications.limit(30)
       end
 
       def unread_remind
-        @unread_count = @current_user.notifications.where(read: false).count
+        @unread_count = @current_user.notifications.order(id: :desc).where(read: false).count
         @recent_notification = @current_user.notifications.order(id: :desc).first
       end
 
