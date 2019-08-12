@@ -40,9 +40,10 @@ class V1::CashQueuesController < ApplicationController
   private
 
   def parse_params
-    Rails.logger.info "string io: #{request.body.read}"
+    stringio = request.body.read
+    Rails.logger.info "string io: #{stringio}"
     # 解析前端传过来的短网址
-    stringio = request.body.read.split('&&')
+    stringio = stringio.split('&&')
     # 获取dwz url 并检查
     dwz_url = stringio.first.split('=').second
     raise_error 'params_missing' if dwz_url.blank?

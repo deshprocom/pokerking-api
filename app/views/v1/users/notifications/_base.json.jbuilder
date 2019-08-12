@@ -4,4 +4,6 @@ json.title         notification.title
 json.content       notification.content
 json.color_type    notification.color_type
 json.read          notification.read
+json.source_type   notification.source_type
+json.source_id     notification.source_id
 json.created_at    notification.created_at.to_i
