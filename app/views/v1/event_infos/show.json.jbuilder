@@ -7,6 +7,7 @@ json.data do
     json.source         @info.source
     json.image          @info.image_url
     json.title          @info.title
+    json.location       @info.location
     json.description    @info.description
     json.created_at     @info.created_at.to_i
   end

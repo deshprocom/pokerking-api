@@ -6,6 +6,7 @@ module V1
 
       def index
         @notifications = @current_user.notifications.order(id: :desc).limit(30)
+        CashGame.position_desc.page(params[:page]).per(params[:page_size])
       end
 
       def unread_remind
