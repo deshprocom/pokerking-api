@@ -1,15 +1,17 @@
 json.partial! 'common/basic', api_result: ApiResult.success_result
 # data
 json.data do
-  json.notifications do
-    json.array! @notifications do |notification|
-      json.id            notification.id
-      json.notify_type   notification.notify_type
-      json.title         notification.title
-      json.content       notification.content
-      json.color_type    notification.color_type
-      json.read          notification.read
-      json.created_at    notification.created_at.to_i
+  json.applies do
+    json.array! @apply_notifications do |notification|
+      json.partial! 'v1/users/notifications/base', notification: notification
     end
   end
+  json.apply_unread_counts @apply_notification_unread
+
+  json.events do
+    json.array! @event_notifications do |notification|
+      json.partial! 'v1/users/notifications/base', notification: notification
+    end
+  end
+  json.event_unread_counts @event_notification_unread
 end
