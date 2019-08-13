@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       end
     end
     resources :cash_games, only: [:index] do
+      post :feedbacks, on: :member
       resources :cash_queues, only: [:index] do
         resources :cash_queue_members, only: [:index]
         post :cancelapply, on: :member
