@@ -5,16 +5,14 @@ module V1
       before_action :user_self_required
 
       def index
-        @apply_notifications = @current_user.notifies('apply')
-        @apply_notification_unread = @apply_notifications.where(read: false).count
-        @event_notifications = @current_user.notifies('event')
-        @event_notification_unread = @event_notifications.where(read: false).count
-        @apply_notifications = @apply_notifications.limit(30)
-        @event_notifications = @event_notifications.limit(30)
+        @apply_notifications = @current_user.notifies('apply').limit(30)
+        @apply_notification_unread = @current_user.notify_apply_unread
+        @event_notifications = @current_user.notifies('event').limit(30) # event notifications是所有人共有
+        @event_notification_unread = @current_user.notify_event_unread
       end
 
       def unread_remind
-        @unread_count = @current_user.notifications.order(id: :desc).where(read: false).count
+        @unread_count = @current_user.notify_apply_unread + @current_user.notify_event_unread
         @recent_notification = @current_user.notifications.order(id: :desc).first
       end
 
@@ -30,11 +28,12 @@ module V1
 
       def read_all
         if params[:type].eql? 'apply'
-          @current_user.notifies('apply').each{ |i| i.update(read: true) }
+          @current_user.update(notify_apply_unread: 0)
         elsif params[:type].eql? 'event'
-          @current_user.notifies('event').each{ |i| i.update(read: true) }
+          @current_user.update(notify_event_unread: 0)
         elsif params[:type].eql? 'all'
-          @current_user.notifications.each{ |i| i.update(read: true) }
+          @current_user.update(notify_apply_unread: 0)
+          @current_user.update(notify_event_unread: 0)
         else
           raise_error 'params_missing'
         end
