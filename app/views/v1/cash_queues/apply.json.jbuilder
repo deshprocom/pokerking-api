@@ -1,4 +1,8 @@
-json.partial! 'common/basic', api_result: ApiResult.success_result
+# meta info
+json.partial! 'common/meta'
+
+json.code     '0000'
+json.msg      '报名成功'
 
 json.data do
   json.id                @queue_member.id
