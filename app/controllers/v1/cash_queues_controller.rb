@@ -23,7 +23,7 @@ class V1::CashQueuesController < ApplicationController
       Notification.create_queue_notify(@current_user, @cash_queue)
     end
     # 4 返回A报名成功的信息
-    render :apply
+    render html: "code=0000"
   end
 
   # app上取消报名排队
