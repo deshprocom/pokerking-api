@@ -46,9 +46,9 @@ class V1::CashQueuesController < ApplicationController
     stringio = request.body.read
     Rails.logger.info "string io: #{stringio}"
     # 解析前端传过来的短网址
-    stringio = stringio.split('&&')
+    stringio = stringio&.split('&&')
     # 获取dwz url 并检查
-    dwz_url = stringio.first.split('=').second
+    dwz_url = stringio&.first&.split('=')&.second
     raise_error 'params_missing' if dwz_url.blank?
     # 获取vg 设备号
     vg_number = stringio.second.split('=').second
