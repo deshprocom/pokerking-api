@@ -21,6 +21,7 @@ class V1::CashQueuesController < ApplicationController
     # 3 报名成功下发通知
     Notification.create_queue_notify(@current_user, @cash_queue)
     # 4 返回A报名成功的信息
+    render_api_error '报名成功', '0000'
   end
 
   # app上取消报名排队
