@@ -30,6 +30,9 @@ module V1
         end
         render_api_success
       end
+
+      # 返回用户通知开关状态
+      def info; end
     end
   end
 end
