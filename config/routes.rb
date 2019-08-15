@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get 'favorites/is_favorite'
       post 'notify/on'
       post 'notify/off'
+      get 'notify/info'
     end
   end
   namespace :v1 do
