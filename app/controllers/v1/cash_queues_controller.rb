@@ -10,19 +10,24 @@ class V1::CashQueuesController < ApplicationController
   # 扫描报名某个盲注结构
   def scanapply
     @params = parse_params # 解析前端传递的参数
+    # 判断是否有效的请求
+    return if redis_url_check(@params[:dwz_url])
+    Rails.logger.info "params: #{@params}"
     check_scan_login(@params[:token]) # 检查设备传递的token是否正确 并返回当前用户
     @params[:cash_queue_id].split('|').each do |queue_id|
       @cash_game = CashGame.find(@params[:cash_game_id])
       # 1 判断A想报名的盲注结构没有与A同名的用户
       @cash_queue = @cash_game.cash_queues.find(queue_id)
       apply_users = @cash_queue.cash_queue_members.where(nickname: @current_user.nickname)
-      raise_error 'already_apply' unless apply_users.blank?
+      Rails.logger.info "error: 上传的参数已有报名的queue：#{queue_id}" unless apply_users.blank?
+      return render html: 'code=1111' unless apply_users.blank?
       # 2 允许A报名
       @queue_member = @cash_queue.cash_queue_members.create(nickname: @current_user.nickname, user_id: @current_user.id, memo: 'from app')
       # 3 报名成功下发通知
       Notification.create_queue_notify(@current_user, @cash_queue)
     end
     # 4 返回A报名成功的信息
+    Rails.logger.info "报名成功啦"
     render html: "code=0000"
   end
 
@@ -66,8 +71,20 @@ class V1::CashQueuesController < ApplicationController
       token: token,
       cash_queue_id: cash_queue_id,
       cash_game_id: cash_game_id,
-      number: vg_number
+      number: vg_number,
+      dwz_url: dwz_url
     }
+  end
+
+  def redis_url_check(url)
+    if Rails.cache.read(url).present?
+      sleep(1)
+      Rails.logger.info "重复的url 已废弃"
+      true
+    else
+      Rails.cache.write(url, url, expires_in: 3.seconds)
+      false
+    end
   end
 
   def parse_dwz(url)
