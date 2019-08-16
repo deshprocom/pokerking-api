@@ -11,7 +11,7 @@ class V1::CashQueuesController < ApplicationController
   def scanapply
     @params = parse_params # 解析前端传递的参数
     check_scan_login(@params[:token]) # 检查设备传递的token是否正确 并返回当前用户
-    @params[:cash_game_id].split('|').each do |queue_id|
+    @params[:cash_queue_id].split('|').each do |queue_id|
       @cash_game = CashGame.find(@params[:cash_game_id])
       # 1 判断A想报名的盲注结构没有与A同名的用户
       @cash_queue = @cash_game.cash_queues.find(queue_id)
