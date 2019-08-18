@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     end
     resources :cash_queues, only: [] do
       post :scanapply, on: :collection
+      post :scanapplystatus, on: :collection
     end
     resources :feedbacks, only: [:create]
     resources :infos, only: [:index, :show] do
