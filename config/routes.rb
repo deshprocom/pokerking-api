@@ -52,6 +52,7 @@ Rails.application.routes.draw do
         get :search
         get :history_search
         get :remove_history_search
+        get :tags
       end
     end
     resources :homepage_banners, only: [:index]

@@ -61,6 +61,10 @@ module V1
       render_api_success
     end
 
+    def tags
+      @tags = InfoTag.all.page(params[:page]).per(params[:page_size])
+    end
+
     private
 
     def is_login?
