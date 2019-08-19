@@ -28,7 +28,16 @@ class V1::CashQueuesController < ApplicationController
     end
     # 4 返回A报名成功的信息
     Rails.logger.info "报名成功啦"
+    Rails.cache.write(url, true, expires_in: 60.seconds) # 将报名的状态重新设为true
     render html: "code=0000"
+  end
+
+  # 用于前端检查二维码是否扫描成功的接口
+  def scanapplystatus
+    requires! :dwz_url
+    dwz_url = params[:dwz_url]
+    url = Rails.cache.read(dwz_url)
+    url ? render_api_success : render_api_error('报名失败')
   end
 
   # app上取消报名排队
@@ -82,7 +91,7 @@ class V1::CashQueuesController < ApplicationController
       Rails.logger.info "重复的url 已废弃"
       true
     else
-      Rails.cache.write(url, url, expires_in: 3.seconds)
+      Rails.cache.write(url, false, expires_in: 60.seconds) # 第一次请求上来设为false
       false
     end
   end
