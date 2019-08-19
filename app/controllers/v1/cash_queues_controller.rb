@@ -1,7 +1,7 @@
 class V1::CashQueuesController < ApplicationController
   include UserAuthorize
   before_action :check_login, except: [:scanapply]
-  before_action :set_cash_game, except: [:scanapply]
+  before_action :set_cash_game, except: [:scanapply, :scanapplystatus]
 
   def index
     from_h5? ? h5_lists : app_lists
@@ -28,7 +28,7 @@ class V1::CashQueuesController < ApplicationController
     end
     # 4 返回A报名成功的信息
     Rails.logger.info "报名成功啦"
-    Rails.cache.write(url, true, expires_in: 60.seconds) # 将报名的状态重新设为true
+    Rails.cache.write(@params[:dwz_url], true, expires_in: 60.seconds) # 将报名的状态重新设为true
     render html: "code=0000"
   end
 
