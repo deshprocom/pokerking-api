@@ -20,7 +20,10 @@ class V1::CashQueuesController < ApplicationController
       @cash_queue = @cash_game.cash_queues.find(queue_id)
       apply_users = @cash_queue.cash_queue_members.where(nickname: @current_user.nickname)
       Rails.logger.info "error: 上传的参数已有报名的queue：#{queue_id}" unless apply_users.blank?
-      return render html: 'code=1111' unless apply_users.blank?
+      unless apply_users.blank?
+        Rails.cache.write(@params[:dwz_url], 'failed', expires_in: 60.seconds)
+        return render html: 'code=1111'
+      end
       # 2 允许A报名
       @queue_member = @cash_queue.cash_queue_members.create(nickname: @current_user.nickname, user_id: @current_user.id, memo: 'from app')
       # 3 报名成功下发通知
@@ -28,16 +31,23 @@ class V1::CashQueuesController < ApplicationController
     end
     # 4 返回A报名成功的信息
     Rails.logger.info "报名成功啦"
-    Rails.cache.write(@params[:dwz_url], true, expires_in: 60.seconds) # 将报名的状态重新设为true
+    Rails.cache.write(@params[:dwz_url], 'success', expires_in: 60.seconds) # 将报名的状态重新设为true
     render html: "code=0000"
   end
 
   # 用于前端检查二维码是否扫描成功的接口
   def scanapplystatus
     requires! :dwz_url
-    dwz_url = params[:dwz_url]
-    url = Rails.cache.read(dwz_url)
-    url ? render_api_success : render_api_error('报名失败')
+    url = Rails.cache.read(params[:dwz_url])
+
+    60.times do
+      # 如果url返回的是true 那么直接返回结果
+      return render_api_success if url.eql? 'success'
+      return render_api_error('报名失败') if url.eql? 'failed'
+      sleep(1) # 一秒执行一次
+    end
+    # 60 秒数据都没有 那么告诉前端请求异常
+    render_api_error('请求用时太久', 2)
   end
 
   # app上取消报名排队
