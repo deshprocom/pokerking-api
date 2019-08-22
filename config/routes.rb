@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :v1 do
+    resources :app_versions, only:[:index]
     namespace :users do
       get 'favorites/index'
       get 'favorites/create'
