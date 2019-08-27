@@ -6,13 +6,13 @@ module V1
 
       def index
         @apply_notifications = @current_user.notifies('apply').limit(30)
-        @apply_notification_unread = @current_user.notify_apply_unread
+        @apply_notification_unread = @current_user.notify_apply_unread_new
         @event_notifications = @current_user.notifies('event').limit(30) # event notifications是所有人共有
-        @event_notification_unread = @current_user.notify_event_unread
+        @event_notification_unread = @current_user.notify_event_unread_new
       end
 
       def unread_remind
-        @unread_count = @current_user.notify_apply_unread + @current_user.notify_event_unread
+        @unread_count = @current_user.notify_apply_unread_new + @current_user.notify_event_unread_new
         @recent_notification = @current_user.notifications.order(id: :desc).first
       end
 
