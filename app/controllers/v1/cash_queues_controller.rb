@@ -38,9 +38,8 @@ class V1::CashQueuesController < ApplicationController
   # 用于前端检查二维码是否扫描成功的接口
   def scanapplystatus
     requires! :dwz_url
-    url = Rails.cache.read(params[:dwz_url])
-
     60.times do
+      url = Rails.cache.read(params[:dwz_url])
       # 如果url返回的是true 那么直接返回结果
       return render_api_success if url.eql? 'success'
       return render_api_error('报名失败') if url.eql? 'failed'
