@@ -21,4 +21,11 @@ json.data do
       json.blind_info   cash_queue[1].blind_info
     end
   end
+
+  # 兼容APP老版本
+  json.ordinary_queues do
+    json.array! @cash_queues do |cash_queue|
+      json.partial! 'v1/cash_queues/item', cash_queue: cash_queue
+    end
+  end
 end
