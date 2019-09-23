@@ -6,6 +6,8 @@ json.data do
     json.id         @recent_event.id
     json.name        @recent_event.name
     json.logo        @recent_event.logo_url
+    json.live_url    @recent_event.live_url
+    json.location    @recent_event.location
     json.begin_time  @recent_event.begin_time.to_i
     json.end_time    @recent_event.end_time.to_i
     json.description @recent_event.description
@@ -17,6 +19,8 @@ json.data do
       json.id          event.id
       json.name        event.name
       json.logo        event.logo_url
+      json.live_url    event.live_url
+      json.location    event.location
       json.begin_time  event.begin_time.to_i
       json.end_time    event.end_time.to_i
     end

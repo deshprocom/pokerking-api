@@ -5,6 +5,8 @@ module V1
 
     def show
       @info = Info.find(params[:id])
+      #热门资讯返回该资讯创建前面的4条资讯
+      @hot_infos = Info.where('id < ?', @info.id).where(hot: true).order(id: :desc).take(4)
     end
 
     def index
@@ -12,7 +14,7 @@ module V1
                    .yield_self{ |it| params[:status].eql?('hot') ? it.hot : it }
                    .page_order
                    .page(params[:page]).per(20)
-      @infos = is_login? ? @infos : @infos.published
+      @infos = is_preview? ? @infos : @infos.published
     end
 
     # 资讯搜索 分关键词搜索，时间搜索，以及类别搜索
@@ -21,7 +23,7 @@ module V1
 
       # 关键词查询
       if (params[:keyword])
-        KeywordRedis.store_keyword('info', params[:keyword])
+        KeywordRedis.store_keyword(store_key, params[:keyword]) if is_login?
         @infos = @infos.where('title like ?', "%#{params[:keyword]}%").page_order.page(params[:page]).per(20)
         return render :index
       end
@@ -48,21 +50,33 @@ module V1
 
     def history_search
       # 去缓存读取所有搜索过的历史关键词
-      history = KeywordRedis.read_keyword 'info'
+      history = KeywordRedis.read_keyword(store_key) if is_login?
       # 每次取多少个词 由前端传递过来 默认取8个
       number = params[:number].to_i <= 0 ? 8 : params[:number].to_i
       @history_array = history.blank? ? [] : history.split('|')[0...number].uniq
     end
 
     def remove_history_search
-      KeywordRedis.remove_keyword('info')
+      KeywordRedis.remove_keyword(store_key) if is_login?
       render_api_success
+    end
+
+    def tags
+      @tags = InfoTag.all.page(params[:page]).per(params[:page_size])
     end
 
     private
 
-    def is_login?
+    def is_preview?
       current_user.present? && current_user.preview
+    end
+
+    def is_login?
+      current_user.present?
+    end
+
+    def store_key
+      "#{@current_user.user_uuid}:info"
     end
   end
 end

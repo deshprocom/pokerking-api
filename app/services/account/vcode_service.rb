@@ -7,7 +7,7 @@ module Services
       RESET_PWD_TITLE = '重设您的密码'.freeze
       COMMON_SMS_TITLE = 'Pokerkinglive验证码'.freeze
       REQUIRE_USER_NOT_EXIST_TYPES = %w[register bind_account bind_new_account].freeze
-      REQUIRE_USER_EXIST_TYPES = %w[register bind_account bind_new_account bind_wx_account].freeze
+      REQUIRE_USER_EXIST_TYPES = %w[register bind_account bind_new_account].freeze
 
       include Serviceable
 
@@ -72,7 +72,7 @@ module Services
 
       def check_permission
         # 登录的情况下跳过检查
-        return if @option_type.eql? 'login'
+        return if @option_type.eql?('login') || @option_type.eql?('change_pwd')
         # 注册和绑定的时候要求用户不存在
         raise_error 'user_already_exist' if @option_type.in?(REQUIRE_USER_NOT_EXIST_TYPES) && check_user_exist
         # 其它情况都要求用户已存在
@@ -83,8 +83,9 @@ module Services
         User.by_email(@account).present? || User.by_mobile(@account, @country_code).present?
       end
 
+      # 从数据库中取 -> change_pwd
       def gain_account_id
-        if @user.present?
+        if @option_type.eql?('change_old_account') || @option_type.eql?('change_pwd')
           @country_code = @user.country_code # 如果是更换账户，那么它的区号 手机号 或邮箱都从数据库取
           @user[:"#{@vcode_type}"]
         else

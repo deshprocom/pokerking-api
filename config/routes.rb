@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
-  namespace :v2 do
-    get 'cash_queues/index'
-  end
   namespace :v1 do
+    resources :app_versions, only:[:index]
     namespace :users do
       get 'favorites/index'
       get 'favorites/create'
       get 'favorites/show'
       get 'favorites/is_favorite'
+      post 'notify/on'
+      post 'notify/off'
+      get 'notify/info'
     end
   end
   namespace :v1 do
@@ -17,6 +18,10 @@ Rails.application.routes.draw do
       get       :verify,   to: 'accounts#verify'
       post      :register, to: 'accounts#create'
       post      :login,    to: 'sessions#create'
+      resource :change_password, only: [:create]
+      resources :bind_account, only: [:create]
+      resources :change_account, only: [:create]
+      resource  :reset_password, only: [:create]
 
       resources :users, only: [] do
         resource :profile, only: [:show, :update]
@@ -32,9 +37,15 @@ Rails.application.routes.draw do
       end
     end
     resources :cash_games, only: [:index] do
+      post :feedbacks, on: :member
       resources :cash_queues, only: [:index] do
         resources :cash_queue_members, only: [:index]
+        post :cancelapply, on: :member
       end
+    end
+    resources :cash_queues, only: [] do
+      post :scanapply, on: :collection
+      post :scanapplystatus, on: :collection
     end
     resources :feedbacks, only: [:create]
     resources :infos, only: [:index, :show] do
@@ -42,6 +53,7 @@ Rails.application.routes.draw do
         get :search
         get :history_search
         get :remove_history_search
+        get :tags
       end
     end
     resources :homepage_banners, only: [:index]
@@ -50,13 +62,28 @@ Rails.application.routes.draw do
         post :cancel, on: :collection
         post :is_favorite, on: :collection
       end
-    end
-  end
-  namespace :v2 do
-    resources :cash_games, only: [:index] do
-      resources :cash_queues, only: [:index] do
-        resources :cash_queue_members, only: [:index]
+      resources :notifications, only: [:index, :destroy] do
+        get 'unread_remind', on: :collection
+        post 'read', on: :member
+        post 'read_all', on: :collection
       end
     end
+    resources :short_url, only: [:create] do
+      post :restore, on: :collection
+    end
   end
+  # namespace :v2 do
+  #   namespace :account do
+  #     post      :register, to: 'accounts#create'
+  #     post      :login,    to: 'sessions#create'
+  #     resource :change_password, only: [:create]
+  #     resources :bind_account, only: [:create]
+  #     resources :change_account, only: [:create]
+  #   end
+  #   resources :cash_games, only: [:index] do
+  #     resources :cash_queues, only: [:index] do
+  #       resources :cash_queue_members, only: [:index]
+  #     end
+  #   end
+  # end
 end

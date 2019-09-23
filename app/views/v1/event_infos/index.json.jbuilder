@@ -6,6 +6,7 @@ json.data do
       json.id             info.id
       json.image          info.image_url
       json.title          info.title
+      json.location       info.location
       json.created_at     info.created_at.to_i
     end
   end

@@ -4,16 +4,16 @@ module V1
     class VerifyVcodesController < ApplicationController
       include UserAuthorize
       before_action :login_need?
-      OPTION_TYPES = %w[login].freeze
+      OPTION_TYPES = %w[login reset_pwd change_pwd change_old_account bind_account bind_new_account].freeze
       VCODE_TYPES = %w[mobile email].freeze
 
       def create
         # 验证码类型是否符合
-        optional! :vcode_type, values: VCODE_TYPES
+        optional! :vcode_type, values: VCODE_TYPES unless params[:option_type].eql?('change_old_account') || params[:option_type].eql?('change_pwd')
         optional! :option_type, values: OPTION_TYPES
 
         # 验证参数
-        requires! :account
+        # requires! :account
 
         if ENV['SKIP_LOGIN_ON'] && ENV['SKIP_LOGIN_MOBILES']&.split(',')&.include?(params[:account]) && params[:vcode].eql?(ENV['SKIP_LOGIN_VCODE'])
           # 说明免登陆
@@ -28,16 +28,16 @@ module V1
       private
 
       def login_need?
-        if params[:option_type].eql?('change_old_account')
-          login_required
-        else
+        if params[:option_type].eql?('login') || params[:option_type].eql?('reset_pwd')
           @current_user = nil
+        else
+          login_required
         end
       end
 
       def gain_account
-        if params[:option_type].eql?('change_old_account')
-          "+#{@current_user.country_code}#{@current_user[params[:vcode_type]]}"
+        if params[:option_type].eql?('change_old_account') || params[:option_type].eql?('change_pwd')
+          "+#{@current_user.country_code}#{@current_user.mobile}"
         else
           "+#{params[:country_code]}#{params[:account]}"
         end
