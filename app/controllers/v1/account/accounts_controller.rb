@@ -3,7 +3,9 @@ module V1
     class AccountsController < ApplicationController
       def create
         # 验证参数 改动的地方是不强制用户使用手机号注册
-        %w[account password nickname gender email].each { |param| requires! param.to_sym }
+        # %w[account password nickname gender email].each { |param| requires! param.to_sym }
+        # 兼容老版本
+        %w[nickname gender email].each { |param| requires! param.to_sym }
         raise_error 'user_nickname_exist' if User.by_nickname(user_params[:nickname]).present? # 检查昵称唯一性
         raise_error 'email_format_error'  unless UserValidator.email_valid?(user_params[:email]) # 检查邮箱的格式
 
