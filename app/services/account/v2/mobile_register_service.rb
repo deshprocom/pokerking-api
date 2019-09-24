@@ -5,7 +5,7 @@ module Services
         include Serviceable
 
         def initialize(params, remote_ip)
-          @account = params[:account].blank? ? ::Digest::MD5.hexdigest(SecureRandom.uuid) : params[:account]
+          @account = params[:account].blank? ? "T#{SecureRandom.hex(5)}" : params[:account]
           @password = params[:password].blank? ? ::Digest::MD5.hexdigest(SecureRandom.uuid) : params[:password]
           @mobile = params[:mobile]
           @country_code = params[:country_code]
