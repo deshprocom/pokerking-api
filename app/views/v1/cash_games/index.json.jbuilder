@@ -10,6 +10,8 @@ json.data do
       json.image_en       cash_game.image_en_url.blank? ? cash_game.image_url : cash_game.image_en_url
       json.image_complex  cash_game.image_complex_url.blank? ? cash_game.image_url : cash_game.image_complex_url
       json.position       cash_game.position.to_i
+      json.amap_poiid     cash_game.amap_poiid
+      json.amap_location  cash_game.amap_location
       json.notice         cash_game.notice
       json.created_at     cash_game.created_at.to_i
     end
