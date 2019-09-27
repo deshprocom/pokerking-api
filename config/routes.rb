@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   namespace :v1 do
+    get 'hot_switch/create'
+  end
+  namespace :v1 do
     resources :app_versions, only:[:index]
+    resources :hot_switch, only:[:create]
     namespace :users do
       get 'favorites/index'
       get 'favorites/create'
