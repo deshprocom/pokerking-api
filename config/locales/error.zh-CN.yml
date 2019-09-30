@@ -11,6 +11,7 @@
     params_format_error: '参数类型或参数值不在指定范围内'
     access_denied: '无权访问'
     invalid_signature: '无效的访问方式'
+    card_info_error: '请确认实名信息填写完善再提交'
 
     # 登录注册香相关
     email_format_error: '无效的邮箱格式'
