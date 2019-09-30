@@ -18,7 +18,6 @@ module Services
           @realname = params[:realname]
           @cert_no = params[:cert_no]
           @img_front = params[:img_front]
-          @img_back = params[:img_back]
           @remote_ip = remote_ip
         end
 
@@ -41,7 +40,7 @@ module Services
           raise_error 'password_format_wrong' unless UserValidator.pwd_valid?(@password)
 
           #验证用户是否上传了实名信息， 如果没有就报错
-          if @realname.blank? || @cert_no.blank? || @img_back.blank? || @img_front.blank?
+          if @realname.blank? || @cert_no.blank? || @img_front.blank?
             raise_error 'card_info_error'
           end
 
@@ -59,11 +58,9 @@ module Services
           # 添加用户实名信息 如果用户上传了就验证 没有就取消验证
           @user_extra = user.user_extras.new
           @user_extra.img_front = @img_front # 正面图片
-          @user_extra.img_back = @img_back # 反面图片
           @user_extra.realname = @realname
           @user_extra.cert_no = @cert_no
           raise_error 'file_format_error' if @user_extra.img_front.blank? || @user_extra.img_front.path.blank?
-          raise_error 'file_format_error' if @user_extra.img_back.blank? || @user_extra.img_back.path.blank?
           unless @user_extra.save
             user.destroy # 如果没有保存成功 报用户上传失败错误返回
             raise_error 'file_upload_error'
