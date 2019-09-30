@@ -14,6 +14,7 @@ module Services
           @country = params[:country]
           @gender = params[:gender]
           @email = params[:email]
+          @birthday = params[:birthday]
           # 实名需要的信息
           @realname = params[:realname]
           @cert_no = params[:cert_no]
@@ -52,7 +53,7 @@ module Services
                            nickname: @nickname,
                            country: @country, # 添加国籍
                            gender: @gender,
-                           email: @email }
+                           email: @email, birthday: @birthday }
           user = User.create_by_mobile(create_infos)
 
           # 添加用户实名信息 如果用户上传了就验证 没有就取消验证
