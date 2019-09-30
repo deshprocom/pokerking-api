@@ -5,6 +5,8 @@ json.gender             user.gender.to_s
 json.avatar             user.avatar_url.to_s
 json.mobile             user.mobile.to_s
 json.country_code       user.country_code.to_s
+json.country            user.country
+json.birthday           user.birthday
 json.email              user.email.to_s
 json.reg_date           user.reg_date.to_i
 json.apply_notify       user.apply_notify
