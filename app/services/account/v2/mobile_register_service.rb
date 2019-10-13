@@ -11,8 +11,14 @@ module Services
           @country_code = params[:country_code]
           @vcode = params[:vcode]
           @nickname = params[:nickname]
+          @country = params[:country]
           @gender = params[:gender]
           @email = params[:email]
+          @birthday = params[:birthday]
+          # 实名需要的信息
+          @realname = params[:realname]
+          @cert_no = params[:cert_no]
+          @img_front = params[:img_front]
           @remote_ip = remote_ip
         end
 
@@ -34,17 +40,34 @@ module Services
           # 检查密码是否合法
           raise_error 'password_format_wrong' unless UserValidator.pwd_valid?(@password)
 
+          #验证用户是否上传了实名信息， 如果没有就报错
+          if @realname.blank? || @cert_no.blank? || @img_front.blank?
+            raise_error 'card_info_error'
+          end
+
           # 可以注册, 创建一个用户
           create_infos = { account_id: @account,
                            password: @password,
                            mobile: @mobile,
                            country_code: @country_code,
                            nickname: @nickname,
+                           country: @country, # 添加国籍
                            gender: @gender,
-                           email: @email }
+                           email: @email, birthday: @birthday }
           user = User.create_by_mobile(create_infos)
-          user.update(last_sign_in_ip: @remote_ip)
 
+          # 添加用户实名信息 如果用户上传了就验证 没有就取消验证
+          @user_extra = user.user_extras.new
+          @user_extra.img_front = @img_front # 正面图片
+          @user_extra.realname = @realname
+          @user_extra.cert_no = @cert_no
+          raise_error 'file_format_error' if @user_extra.img_front.blank? || @user_extra.img_front.path.blank?
+          unless @user_extra.save
+            user.destroy # 如果没有保存成功 报用户上传失败错误返回
+            raise_error 'file_upload_error'
+          end
+
+          user.update(last_sign_in_ip: @remote_ip)
           # 生成用户令牌
           access_token = UserToken.encode(user.user_uuid)
           LoginResultHelper.call(user, access_token)
