@@ -15,6 +15,7 @@ json.data do
       json.amap_location  cash_game.amap_location.to_s
       json.amap_navigation_url cash_game.amap_navigation_url.to_s
       json.notice         cash_game.notice
+      json.cash_queue_numbers cash_game.cash_queues.count
       json.created_at     cash_game.created_at.to_i
     end
   end
