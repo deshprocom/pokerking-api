@@ -59,7 +59,7 @@ module Services
           # 添加用户实名信息 如果用户上传了就验证 没有就取消验证
           @user_extra = user.user_extras.new
           @user_extra.img_front = @img_front # 正面图片
-          @user_extra.realname = @realname
+          @user_extra.real_name = @realname
           @user_extra.cert_no = @cert_no
           raise_error 'file_format_error' if @user_extra.img_front.blank? || @user_extra.img_front.path.blank?
           unless @user_extra.save
