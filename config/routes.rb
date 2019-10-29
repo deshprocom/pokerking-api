@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   namespace :v1 do
+    namespace :account do
+      get 'certification/create'
+    end
+  end
+  namespace :v1 do
     get 'hot_switch/create'
   end
   namespace :v1 do
@@ -29,6 +34,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [] do
         resource :profile, only: [:show, :update]
+        resources :certification, only: [:index, :create, :update]
         resource :avatar, only: [:update]
       end
     end
