@@ -18,7 +18,7 @@ module V1
       private
 
       def user_params
-        params.permit(:nickname, :gender, :email)
+        params.permit(:nickname, :gender, :email, :birthday, :country)
       end
     end
   end
