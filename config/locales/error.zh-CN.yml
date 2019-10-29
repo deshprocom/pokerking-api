@@ -37,4 +37,5 @@
     already_favorite: '已经收藏过了'
     already_apply: '已有同昵称用户报名过比赛'
     no_apply: '系统没有检测到您的报名信息'
-    NO_CERTIFICATION: '用户未实名'
+    no_certification: '用户未实名'
+    certification_exist: '用户已存在实名信息'
