@@ -6,7 +6,7 @@ module V1
 
       def index
         @user_extra = @current_user.user_extras.first # 暂时为单实名
-        raise_error 'NO_CERTIFICATION' if @user_extra.blank?
+        raise_error 'no_certification' if @user_extra.blank?
         render :index
       end
 
@@ -14,6 +14,8 @@ module V1
         requires! :real_name
         requires! :cert_no
         requires! :img_front
+
+        raise_error 'certification_exist' if @current_user.user_extras.present?
 
         @user_extra = @current_user.user_extras.new
         @user_extra.img_front = params[:img_front] # 正面图片
