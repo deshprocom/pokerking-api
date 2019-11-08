@@ -40,9 +40,12 @@ module Services
           # 检查密码是否合法
           raise_error 'password_format_wrong' unless UserValidator.pwd_valid?(@password)
 
-          #验证用户是否上传了实名信息， 如果没有就报错
-          if @realname.blank? || @cert_no.blank? || @img_front.blank?
-            raise_error 'card_info_error'
+          # 判断是新版还是老版 如果前端给了country那么是新版 需要强制实名
+          if @country.present?
+            #验证用户是否上传了实名信息， 如果没有就报错
+            if @realname.blank? || @cert_no.blank? || @img_front.blank?
+              raise_error 'card_info_error'
+            end
           end
 
           # 可以注册, 创建一个用户
@@ -53,18 +56,21 @@ module Services
                            nickname: @nickname,
                            country: @country, # 添加国籍
                            gender: @gender,
-                           email: @email, birthday: @birthday }
+                           email: @email,
+                           birthday: @birthday }
           user = User.create_by_mobile(create_infos)
 
-          # 添加用户实名信息 如果用户上传了就验证 没有就取消验证
-          @user_extra = user.user_extras.new
-          @user_extra.img_front = @img_front # 正面图片
-          @user_extra.realname = @realname
-          @user_extra.cert_no = @cert_no
-          raise_error 'file_format_error' if @user_extra.img_front.blank? || @user_extra.img_front.path.blank?
-          unless @user_extra.save
-            user.destroy # 如果没有保存成功 报用户上传失败错误返回
-            raise_error 'file_upload_error'
+          if @country.present?
+            # 添加用户实名信息 如果用户上传了就验证 没有就取消验证
+            @user_extra = user.user_extras.new
+            @user_extra.img_front = @img_front # 正面图片
+            @user_extra.real_name = @realname
+            @user_extra.cert_no = @cert_no
+            raise_error 'file_format_error' if @user_extra.img_front.blank? || @user_extra.img_front.path.blank?
+            unless @user_extra.save
+              user.destroy # 如果没有保存成功 报用户上传失败错误返回
+              raise_error 'file_upload_error'
+            end
           end
 
           user.update(last_sign_in_ip: @remote_ip)
