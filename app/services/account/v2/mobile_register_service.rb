@@ -56,7 +56,8 @@ module Services
                            nickname: @nickname,
                            country: @country, # 添加国籍
                            gender: @gender,
-                           email: @email, birthday: @birthday }
+                           email: @email,
+                           birthday: @birthday }
           user = User.create_by_mobile(create_infos)
 
           if @country.present?
