@@ -42,7 +42,8 @@ gem 'kaminari'
 gem 'carrierwave', '~> 1.0'
 gem 'carrierwave-upyun'
 gem 'mini_magick', '~> 4.9', '>= 4.9.2'
-gem 'twilio-ruby'
+# gem 'twilio-ruby'
+gem 'twilio-ruby', '~> 5.29.1'
 
 gem 'newrelic_rpm'
 

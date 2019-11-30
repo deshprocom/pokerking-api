@@ -15,13 +15,17 @@ module V1
         # 验证参数
         # requires! :account
 
-        if ENV['SKIP_LOGIN_ON'] && ENV['SKIP_LOGIN_MOBILES']&.split(',')&.include?(params[:account]) && params[:vcode].eql?(ENV['SKIP_LOGIN_VCODE'])
-          # 说明免登陆
-          nil
-        else
-          # 检查验证码是否正确
-          raise_error 'vcode_not_match' unless VCode.check_vcode(params[:option_type], gain_account, params[:vcode])
-        end
+        # if ENV['SKIP_LOGIN_ON'] && ENV['SKIP_LOGIN_MOBILES']&.split(',')&.include?(params[:account]) && params[:vcode].eql?(ENV['SKIP_LOGIN_VCODE'])
+        #   # 说明免登陆
+        #   nil
+        # else
+        #   # 检查验证码是否正确
+        #   # raise_error 'vcode_not_match' unless VCode.check_vcode(params[:option_type], gain_account, params[:vcode])
+        #   # 使用v2版本检查验证码是否正确
+        #   raise_error 'vcode_not_match' unless TwilioVerifyApi.new.check_verification(gain_account, params[:vcode])
+        # end
+        #
+        # 由于twilio短信验证码失效无法控制时间 这里去掉这个判断
         render_api_success
       end
 
