@@ -24,8 +24,10 @@ module Services
         private
 
         def check_code(type, account, code)
-          return true if Rails.env.to_s.eql?('test') || ENV['AC_TEST'].present?
-          VCode.check_vcode(type, account, code)
+          # return true if Rails.env.to_s.eql?('test') || ENV['AC_TEST'].present?
+          # VCode.check_vcode(type, account, code)
+          # 使用v2版本检查验证码是否正确
+          TwilioVerifyApi.new.check_verification(account, code)
         end
 
         def update_mobile(mobile)

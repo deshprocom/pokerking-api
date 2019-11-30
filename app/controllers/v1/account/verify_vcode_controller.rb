@@ -20,7 +20,9 @@ module V1
           nil
         else
           # 检查验证码是否正确
-          raise_error 'vcode_not_match' unless VCode.check_vcode(params[:option_type], gain_account, params[:vcode])
+          # raise_error 'vcode_not_match' unless VCode.check_vcode(params[:option_type], gain_account, params[:vcode])
+          # 使用v2版本检查验证码是否正确
+          raise_error 'vcode_not_match' unless TwilioVerifyApi.new.check_verification(gain_account, params[:vcode])
         end
         render_api_success
       end

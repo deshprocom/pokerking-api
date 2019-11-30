@@ -22,7 +22,9 @@ module Services
           raise_error 'password_format_wrong' unless UserValidator.pwd_valid?(new_pwd)
 
           # 判断验证码是否一致
-          raise_error 'vcode_not_match' unless VCode.check_vcode('change_pwd', "+#{country_code}#{mobile}", vcode)
+          # raise_error 'vcode_not_match' unless VCode.check_vcode('change_pwd', "+#{country_code}#{mobile}", vcode)
+          # 使用v2版本检查验证码是否正确
+          raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{country_code}#{mobile}", vcode)
 
           # 生成新的密码 设置新的盐值
           new_salt = SecureRandom.hex(6).slice(0, 6)
