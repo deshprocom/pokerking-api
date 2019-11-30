@@ -19,7 +19,9 @@ module Services
         raise_error 'mobile_format_error' unless UserValidator.mobile_valid?(@mobile, @country_code)
 
         # 检查验证码是否正确
-        raise_error 'vcode_not_match' unless VCode.check_vcode('login', "+#{@country_code}#{@mobile}", @vcode)
+        # raise_error 'vcode_not_match' unless VCode.check_vcode('login', "+#{@country_code}#{@mobile}", @vcode)
+        # 使用v2版本检查验证码是否正确
+        raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{@country_code}#{@mobile}", @vcode)
 
         # 检查手机号是否存在
         raise_error 'mobile_already_used' if UserValidator.mobile_exists?(@mobile, @country_code)

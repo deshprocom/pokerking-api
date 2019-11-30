@@ -10,7 +10,7 @@ module V1
       def create
         optional! :vcode_type, values: VCODE_TYPES
         optional! :option_type, values: OPTION_TYPES
-        Services::Account::VcodeServices.call(@current_user, user_params)
+        Services::Account::VcodeServicesV2.call(@current_user, user_params) # 使用v2版本发送
         render_api_success
       end
 
