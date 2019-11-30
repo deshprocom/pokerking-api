@@ -23,16 +23,11 @@ module Services
         end
 
         def call
-          # 手机号不做强制输入， 但是一旦输入了手机号 那么就需要做验证逻辑
           if @mobile.present?
             # 检查手机格式是否正确
             raise_error 'mobile_format_error' unless UserValidator.mobile_valid?(@mobile, @country_code)
             # 检查手机号是否存在
             raise_error 'mobile_already_used' if UserValidator.mobile_exists?(@mobile, @country_code)
-            # 检查验证码是否正确
-            # raise_error 'vcode_not_match' unless VCode.check_vcode('login', "+#{@country_code}#{@mobile}", @vcode)
-            # 使用v2版本检查验证码是否正确
-            raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{@country_code}#{@mobile}", @vcode)
           end
           # 账户长度是否合法
           raise_error 'account_illegal' unless UserValidator.account_valid?(@account)
@@ -48,6 +43,13 @@ module Services
             if @realname.blank? || @cert_no.blank? || @img_front.blank?
               raise_error 'card_info_error'
             end
+          end
+
+          if @mobile.present? # 由于twilio的特殊性 先检查完上面的 再判断验证码是否正确
+            # 检查验证码是否正确
+            # raise_error 'vcode_not_match' unless VCode.check_vcode('login', "+#{@country_code}#{@mobile}", @vcode)
+            # 使用v2版本检查验证码是否正确
+            raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{@country_code}#{@mobile}", @vcode)
           end
 
           # 可以注册, 创建一个用户
