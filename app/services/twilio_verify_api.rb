@@ -14,6 +14,7 @@ class TwilioVerifyApi
   end
 
   def check_verification(to, code)
+    puts "check_verification, #{to}, #{code}"
     begin
       verification_check = @client.verify.services(ENV['VERIFICATION_SID'])
                                .verification_checks
