@@ -25,9 +25,9 @@ class V1::CashQueuesController < ApplicationController
         return render html: 'code=1111'
       end
       # 2 允许A报名
-      @queue_member = @cash_queue.cash_queue_members.create(nickname: @current_user.nickname, user_id: @current_user.id, memo: 'from app')
+      @queue_member = @cash_queue.cash_queue_members.create(nickname: @current_user.nickname, user_id: @current_user.id, memo: 'from app', confirmed: false)
       # 3 报名成功下发通知
-      Notification.create_queue_notify(@current_user, @cash_queue)
+      # Notification.create_queue_notify(@current_user, @cash_queue)
     end
     # 4 返回A报名成功的信息
     Rails.logger.info "报名成功啦"
