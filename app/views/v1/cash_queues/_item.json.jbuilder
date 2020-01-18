@@ -14,5 +14,5 @@ json.notice                     cash_queue.notice.to_s
 json.currency                   cash_queue.currency
 json.created_at                 cash_queue.created_at.to_i
 json.apply_index                cash_queue.current_user_index(@current_user)
-json.confirmed                  cash_queue.current_user_apply_status(@current_user)
+json.apply_status               cash_queue.current_user_apply_status(@current_user)
 
