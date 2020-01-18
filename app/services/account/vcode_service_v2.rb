@@ -38,6 +38,8 @@ module Services
           vcode = VCode.generate_mobile_vcode(@option_type, "+#{@country_code}#{@account}")
           sms_content = format(send_template, vcode)
           Rails.logger.info "send [#{sms_content}] to #{@account} in queue"
+          # 测试则不实际发出去
+          return ApiResult.success_result if Rails.env.to_s.eql?('test') || ENV['AC_TEST'].present?
         end
 
         SendMobileIsmsJob.perform_later(@account, @country_code, sms_content)
