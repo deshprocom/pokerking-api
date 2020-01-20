@@ -23,11 +23,19 @@ module Services
           # 说明免登陆
         else
           # 非免登陆
-          # unless VCode.check_vcode('login', vcode_account, @vcode)
-          # 使用v2版本检查验证码是否正确
-          unless TwilioVerifyApi.new.check_verification(vcode_account, @vcode)
-            raise_error 'vcode_not_match'
+          # 86 走大陆验证 其它走twilio
+          if @country_code.eql? '86'
+            raise_error 'vcode_not_match' unless VCode.check_vcode('login', vcode_account, @vcode)
+          else
+            unless TwilioVerifyApi.new.check_verification(vcode_account, @vcode)
+              raise_error 'vcode_not_match'
+            end
           end
+          #
+          # 使用v2版本检查验证码是否正确
+          # unless TwilioVerifyApi.new.check_verification(vcode_account, @vcode)
+          #   raise_error 'vcode_not_match'
+          # end
         end
 
         # 刷新上次访问时间

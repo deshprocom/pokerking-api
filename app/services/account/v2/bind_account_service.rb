@@ -27,7 +27,13 @@ module Services
           # return true if Rails.env.to_s.eql?('test') || ENV['AC_TEST'].present?
           # VCode.check_vcode(type, account, code)
           # 使用v2版本检查验证码是否正确
-          TwilioVerifyApi.new.check_verification(account, code)
+          # TwilioVerifyApi.new.check_verification(account, code)
+          return true if Rails.env.to_s.eql?('test') || ENV['AC_TEST'].present?
+          if user_params[:country_code].eql? '86'
+            VCode.check_vcode(type, account, code)
+          else
+            TwilioVerifyApi.new.check_verification(account, code)
+          end
         end
 
         def update_mobile(mobile)
