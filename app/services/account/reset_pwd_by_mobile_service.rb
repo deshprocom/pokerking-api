@@ -22,7 +22,14 @@ module Services
         # 检查验证码是否正确
         # raise_error 'vcode_not_match' unless VCode.check_vcode('reset_pwd', "+#{country_code}#{mobile}", vcode)
         # 使用v2版本检查验证码是否正确
-        raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{country_code}#{mobile}", vcode)
+        # raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{country_code}#{mobile}", vcode)
+        if @country_code.eql? '86'
+          raise_error 'vcode_not_match' unless VCode.check_vcode('login', vcode_account, @vcode)
+        else
+          unless TwilioVerifyApi.new.check_verification(vcode_account, @vcode)
+            raise_error 'vcode_not_match'
+          end
+        end
 
         # 查询用户
         user = User.by_mobile(mobile)
