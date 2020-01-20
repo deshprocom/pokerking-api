@@ -24,7 +24,14 @@ module Services
           # 判断验证码是否一致
           # raise_error 'vcode_not_match' unless VCode.check_vcode('change_pwd', "+#{country_code}#{mobile}", vcode)
           # 使用v2版本检查验证码是否正确
-          raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{country_code}#{mobile}", vcode)
+          # raise_error 'vcode_not_match'  unless TwilioVerifyApi.new.check_verification("+#{country_code}#{mobile}", vcode)
+          if @country_code.eql? '86'
+            raise_error 'vcode_not_match' unless VCode.check_vcode('login', vcode_account, @vcode)
+          else
+            unless TwilioVerifyApi.new.check_verification(vcode_account, @vcode)
+              raise_error 'vcode_not_match'
+            end
+          end
 
           # 生成新的密码 设置新的盐值
           new_salt = SecureRandom.hex(6).slice(0, 6)
