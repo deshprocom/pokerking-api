@@ -15,6 +15,7 @@ require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
+require File.expand_path('../../lib/middlewares/switch_table_lang', __FILE__)
 Bundler.require(*Rails.groups)
 
 module PokerkingApi
@@ -39,6 +40,8 @@ module PokerkingApi
     config.autoload_paths += [
         Rails.root.join('lib')
     ]
+
+    config.middleware.insert_before Rack::Head, PokerkingApi::SwitchTableLang
 
     # eager_load
     config.eager_load_paths += [

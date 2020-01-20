@@ -11,6 +11,7 @@ json.data do
       json.table_numbers              item.cash_queue.table_nums
       json.canceled                   item.canceled
       json.position                   item.position.to_i
+      json.confirmed                  item.confirmed
       json.created_at                 item.created_at.to_i
     end
   end

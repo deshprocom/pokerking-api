@@ -1,7 +1,7 @@
 module Services
   module Account
     class VcodeServicesV2
-      COMMON_SMS_TEMPLATE = '【Pokerkinglive】Your verification code is:%s'.freeze
+      COMMON_SMS_TEMPLATE = '%s为您的验证码，请于1分钟内填写，如非本人操作，请忽略本短信。'.freeze
       RESET_PWD_SMS_TEMPLATE = '【Pokerkinglive】Your verification code is:%s'.freeze
       REGISTER_SMS_TITLE = '请激活您的帐号，完成注册'.freeze
       RESET_PWD_TITLE = '重设您的密码'.freeze
@@ -31,7 +31,18 @@ module Services
 
       def send_mobile_vcodes
         raise_error 'mobile_format_error' unless UserValidator.mobile_valid?(@account, @country_code)
-        SendMobileIsmsJob.perform_later(@account, @country_code)
+        sms_content = ''
+
+        if @country_code.eql?('86') # 如果是国内 走腾讯云
+          # 验证的时候也要带上区号 才可以
+          vcode = VCode.generate_mobile_vcode(@option_type, "+#{@country_code}#{@account}")
+          sms_content = format(send_template, vcode)
+          Rails.logger.info "send [#{sms_content}] to #{@account} in queue"
+          # 测试则不实际发出去
+          return ApiResult.success_result if Rails.env.to_s.eql?('test') || ENV['AC_TEST'].present?
+        end
+
+        SendMobileIsmsJob.perform_later(@account, @country_code, sms_content)
         ApiResult.success_result
       end
 
@@ -49,7 +60,7 @@ module Services
       end
 
       def send_template
-        @option_type.eql?('reset_pwd') ? RESET_PWD_SMS_TEMPLATE : COMMON_SMS_TEMPLATE
+        @option_type.eql?('reset_pwd') ? COMMON_SMS_TEMPLATE : COMMON_SMS_TEMPLATE
       end
 
       def send_title
